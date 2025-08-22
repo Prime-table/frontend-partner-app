@@ -1,0 +1,97 @@
+/* Navbar.css */
+
+/* Navbar container */
+.navbar {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Neue Montreal", sans-serif;
+  position: relative;
+  z-index: 100;
+}
+
+/* Logo */
+.navbar-logo img {
+  width: 120px;
+  height: auto;
+}
+
+/* Desktop menu */
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  margin-left: 100px;
+}
+
+/* Menu links */
+.navbar-menu a {
+  text-decoration: none;
+  color: black;
+  text-transform: capitalize;
+  opacity: 0.67;
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-menu a:hover {
+  color: #e32d33;
+}
+
+/* Logout button */
+.btn-logout {
+  background-color: white;
+  width: 140px;
+  height: 50px;
+  color: #e32d33;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d12a2f;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-logout:hover {
+  background-color: #d12a2f;
+  color: #fff;
+}
+/* Mobile sidebar menu (always visible) */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack logo and menu */
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .navbar-menu {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: auto;          /* Allow content to define height */
+    width: 100%;           /* Full width */
+    flex-direction: column; /* Vertical menu */
+    gap: 1rem;             /* Space between items */
+    padding: 1rem 0 0 0;
+    background-color: white;
+    box-shadow: none;       /* Optional: remove shadow */
+    transform: none;        /* Remove hidden transform */
+  }
+
+  .navbar-menu li {
+    width: 100%;
+  }
+
+  .navbar-menu a,
+  .btn-logout {
+    width: 30%;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
+}
+

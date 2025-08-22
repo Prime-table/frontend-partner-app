@@ -1,0 +1,57 @@
+.profile-save-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Neue Montreal", sans-serif;
+  background-color: #f9f9f9;
+}
+
+.profile-save-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.icon-wrapper {
+  background-color: #28a745; /* green */
+  padding: 1rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.check-icon {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.profile-save-headline {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.profile-save-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.btn-view-profile {
+  padding: 0.75rem 2rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #e32d33;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-view-profile:hover {
+  background-color: #d12a2f;
+}
