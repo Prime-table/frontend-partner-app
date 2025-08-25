@@ -1,0 +1,144 @@
+.reservation-status {
+    margin-left: 20rem;
+    margin-top: 4rem;
+}
+
+.reservation-status h3 {
+    font-size: medium;
+    font-weight: 600;
+}
+
+.filter-container {
+  margin: 1rem 0;
+  font-family: Arial, sans-serif;
+}
+
+.filter-select {
+  width: 309px;
+  height: 55px;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;       /* light gray border */
+  border-radius: 0.1rem;           /* rounded corners */
+  background-color: #fff;       /* white background */
+  color: #333;                  /* text color */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Hover / Focus effects */
+.filter-select:hover,
+.filter-select:focus {
+  box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+  outline: none;
+}
+
+/* Style individual options (limited in most browsers) */
+.filter-select option[value="pending"] {
+  color: #d97706;  /* amber / orange */
+}
+.filter-select option[value="approved"] {
+  color: #059669;  /* green */
+}
+.filter-select option[value="cancelled"] {
+  color: #dc2626;  /* red */
+}
+
+.no-reservation {
+    margin-top: 15rem;
+}
+
+.no-reservation h6 {
+    font-size: medium;
+    text-align: center;
+    font-weight: 600;
+}
+
+.no-reservation p {
+    font-size: medium;
+    text-align: center;
+}
+
+.reservations-container {  
+  max-width: 1249px;
+  margin: 20px auto;
+}
+
+.reservation-table {
+  margin-top: 5rem;  
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reservation-table th{
+  border-bottom: 1px solid #ddd;
+  padding: 12px;
+  height: 45px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.reservation-table td {
+  border-bottom: 1px solid #ddd;
+  height: 45px;
+  padding: 12px;
+  text-align: center;
+}
+
+.reservation-table th {
+  background: #f8f8f8;
+}
+
+/* STATUS COLORS */
+.status {
+  margin-left: 40px;
+  font-weight: light;
+}
+.status.pending {
+  color: #f2994a;
+}
+.status.approved {
+  color: #42b874;
+}
+.status.cancelled {
+  color: #d84949;
+}
+.action-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.action-icon {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.action-modal {
+  position: absolute;
+  width: 187px;
+  height: 132px;
+  border-radius: 0.8rem;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+
+.border-btn {
+  padding: 6px 12px;
+  height: 40px;
+  color: #d12a2f;
+  border: 1px solid #d12a2f;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.border-btn:hover {
+  background: #f0f0f0;
+}

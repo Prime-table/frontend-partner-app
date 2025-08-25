@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FaCheck } from "react-icons/fa"; // white check icon
 import "../components/styles/ProfileSave.css";
+import Navbar from "../components/Navbar/Navbar";
 
 const ProfileSavePage = () => {
   const router = useRouter();
@@ -12,7 +13,11 @@ const ProfileSavePage = () => {
   };
 
   return (
-    <div className="profile-save-page">
+    <div>
+      <div>
+        <Navbar />
+      </div>
+      <div className="profile-save-page">
       <div className="profile-save-container">
         <div className="icon-wrapper">
           <FaCheck className="check-icon" />
@@ -23,6 +28,7 @@ const ProfileSavePage = () => {
           View Profile
         </button>
       </div>
+    </div>
     </div>
   );
 };

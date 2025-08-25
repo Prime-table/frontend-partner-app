@@ -21,7 +21,7 @@ const Navbar = () => {
 
       if (response.ok) {
         // Optionally clear localStorage/sessionStorage
-        localStorage.removeItem("token");
+        localStorage.removeItem("token"); 
         sessionStorage.clear();
 
         // Redirect to login page

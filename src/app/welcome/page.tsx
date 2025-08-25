@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import "../components/styles/Welcome.css";
+import Navbar from "../components/Navbar/Navbar";
 
 const WelcomePage = () => {
   const router = useRouter();
@@ -28,7 +29,11 @@ const WelcomePage = () => {
   };
 
   return (
-    <div className="welcome-page">
+    <div>
+      <div>
+        <Navbar />
+      </div>
+      <div className="welcome-page">
       <div className="welcome-container">
         <h1 className="welcome-title">Welcome to Prime Table!</h1>
         <p className="welcome-subtitle">Set up your profile to get started</p>
@@ -36,6 +41,7 @@ const WelcomePage = () => {
           Set Up Profile
         </button>
       </div>
+    </div>
     </div>
   );
 };

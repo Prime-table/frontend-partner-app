@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../components/styles/Profile.css";
+import Navbar from "../components/Navbar/Navbar";
 
 const times = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, "0")}:00`);
 
@@ -58,7 +59,9 @@ const ProfilePage = () => {
 
 
   return (
-    <div className="profile-page large-container">
+    <div>
+      <Navbar />
+      <div className="profile-page large-container">
       <h1 className="profile-headline">Profile Form</h1>
       <form className="profile-container" onSubmit={handleSubmit}>
         <label>
@@ -150,6 +153,7 @@ const ProfilePage = () => {
 
         <button type="submit" className="btn-save">Save Changes</button>
       </form>
+    </div>
     </div>
   );
 };

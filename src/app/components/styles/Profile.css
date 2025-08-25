@@ -177,3 +177,181 @@
 .btn-save:hover {
   background-color: #d12a2f;
 }
+
+.profile-edit {
+  margin: 3rem;
+  padding-left: 24rem;
+  padding-right: 24rem;
+}
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-header h3 {
+  font-weight: 400;
+}
+.edit-button {
+  background-color: #e32d33;
+  color: #fff;
+  padding: 0.75rem 2rem;
+  border-radius: 0.3rem;
+  font-weight: 600;
+  height: 50;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+ .edit-button:hover {
+  background-color: #d12a2f;
+ }
+
+ .profile-section {
+  width: 100%;
+  border: 1px solid #28292c36;
+  border-radius: 0.5rem;
+ }
+
+ .profile-indicator {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+ }
+
+ .circular-object {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #e95d5d;
+ }
+
+ .big-taste {
+  font-size: medium;
+  font-weight: 400;
+  padding-top: 0.5rem;
+ }
+ .reservation-container {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: 1.9rem;
+  margin-right: 1.9rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+ }
+
+ .reservation-container div {
+  width: 100%;
+  border: 1px solid #28292c36;
+  border-radius: 0.5rem;
+ }
+
+ .reservation-container div p {
+  font-size: medium;
+  font-weight: 300;
+  padding-left: 0.8rem;
+ }
+
+ .address-container {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: 1.9rem;
+  margin-right: 1.9rem;
+  margin-bottom: 1.5rem;
+ }
+
+ .address-container div {
+  width: 100%;
+  border: 1px solid #28292c36;
+  border-radius: 0.5rem;
+ }
+
+ .address-container div h5 {
+  font-size: medium;
+  padding-left: 0.8rem;
+ }
+
+ .address-container div p {
+  font-size: medium;
+  font-weight: 300;
+  padding-left: 0.8rem;
+ }
+
+ .description-container {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: 1.9rem;
+  margin-right: 1.9rem;
+  margin-bottom: 1.5rem;
+ }
+
+ .description-container div {
+  width: 100%;
+  border-radius: 0.5rem;
+ }
+
+ .description {
+  border: 1px solid #28292c36;
+ }
+
+ .description h5 {
+  font-size: medium;
+  padding-left: 0.8rem;
+ }
+
+ .description p {
+  font-size: medium;
+  font-weight: 300;
+  padding-left: 0.8rem;
+ }
+
+ .premium-container {
+  display: flex;
+  gap: 0.8rem;
+ }
+
+ .premium-container div {
+  border: 1px solid #28292c36;
+ }
+
+ .premium-container h5 {
+  font-size: medium;
+  padding-left: 0.8rem;
+ }
+
+ .premium-container p {
+  font-size: medium;
+  font-weight: 300;
+  padding-left: 0.8rem;
+ }
+
+ .image-container {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: 1.9rem;
+  margin-right: 1.9rem;
+  margin-bottom: 1.5rem;
+ }
+
+ .first-image {
+  background-image: url('../../../../public/images/Bacon\ Burgers@2x.png');
+  width: 228px;
+  height: 202px;
+  border-radius: 1.5rem;
+ }
+
+ .second-image {
+  background-image: url('../../../../public/images/Bacon\ Burgers@2x\ \(1\).png');
+  width: 329px;
+  height: 202px;
+  border-radius: 1.5rem;
+ }
+
+ .third-image {
+  background-image: url('../../../../public/images/Frame\ 177.png');
+  width: 489px;
+  height: 202px;
+  border-radius: 1.5rem;
+ }
+
