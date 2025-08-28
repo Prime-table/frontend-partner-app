@@ -44,6 +44,7 @@ const Navbar = () => {
         <li><Link href="/dashboard">Dashboard</Link></li>
         <li><Link href="/profile">Profile</Link></li>
         <li><Link href="/reservations">Reservations</Link></li>
+        <li><Link href="/promotions">Promotions</Link></li>
         <li><Link href="/analytics">Analytics</Link></li>
         <li><Link href="/settings">Settings</Link></li>
         <li>
