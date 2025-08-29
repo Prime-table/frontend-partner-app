@@ -15,7 +15,7 @@ const DasboardFilled = () => {
       const reservations = [
         {
           id: 1,
-          date: "2025-08-22",
+          date: "2025/08/22",
           time: "7:00 PM",
           size: 4,
           name: "Mecury Paul",
@@ -24,7 +24,7 @@ const DasboardFilled = () => {
         },
         {
           id: 2,
-          date: "2025-08-23",
+          date: "2025/08/23",
           time: "8:00 PM",
           size: 2,
           name: "Mecury Paul",
@@ -33,7 +33,7 @@ const DasboardFilled = () => {
         },
         {
           id: 3,
-          date: "2025-08-23",
+          date: "2025/08/23",
           time: "8:00 PM",
           size: 2,
           name: "Mecury Paul",
@@ -94,7 +94,7 @@ const DasboardFilled = () => {
                 </div>
                 <div>
                     <p>Payout Status</p>
-                    <div className='status-filled'>
+                    <div className='status-filled'> 
                         <p>N150,000.00</p>
                         <p>pending</p>
                     </div>

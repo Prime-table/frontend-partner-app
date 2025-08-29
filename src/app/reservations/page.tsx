@@ -12,7 +12,7 @@ const ReservationTable = () => {
   const reservations = [
     {
       id: 1,
-      date: "2025-08-22",
+      date: "2025/08/22",
       time: "7:00 PM",
       size: 4,
       name: "Mecury Paul",
@@ -21,7 +21,7 @@ const ReservationTable = () => {
     },
     {
       id: 2,
-      date: "2025-08-23",
+      date: "2025/08/23",
       time: "8:00 PM",
       size: 2,
       name: "Mecury Paul",
@@ -30,7 +30,7 @@ const ReservationTable = () => {
     },
     {
       id: 3,
-      date: "2025-08-23",
+      date: "2025/08/23",
       time: "8:00 PM",
       size: 2,
       name: "Mecury Paul",
@@ -39,7 +39,7 @@ const ReservationTable = () => {
     },
     {
       id: 4,
-      date: "2025-08-23",
+      date: "2025/08/23",
       time: "8:00 PM",
       size: 2,
       name: "Mecury Paul",
@@ -48,7 +48,7 @@ const ReservationTable = () => {
     },
     {
       id: 5,
-      date: "2025-08-23",
+      date: "2025/08/23",
       time: "8:00 PM",
       size: 2,
       name: "Mecury Paul",

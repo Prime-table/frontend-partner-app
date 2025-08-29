@@ -93,7 +93,7 @@
 /* STATUS COLORS */
 .status {
   margin-left: 40px;
-  font-weight: light;
+  font-weight: light; 
 }
 .status.pending {
   color: #f2994a;
