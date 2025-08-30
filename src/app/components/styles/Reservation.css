@@ -1,13 +1,16 @@
+/* ================= Reservation Status ================= */
 .reservation-status {
-    margin-left: 20rem;
-    margin-top: 4rem;
+  max-width: 1249px;
+  margin: 4rem auto 0 auto;   /* center horizontally */
+  padding: 0 1rem;            /* safe spacing on small screens */
 }
 
 .reservation-status h3 {
-    font-size: medium;
-    font-weight: 600;
+  font-size: medium;
+  font-weight: 600;
 }
 
+/* ================= Filter ================= */
 .filter-container {
   margin: 1rem 0;
   font-family: Arial, sans-serif;
@@ -18,10 +21,10 @@
   height: 55px;
   margin-left: 1rem;
   padding: 0.5rem 1rem;
-  border: 1px solid #ccc;       /* light gray border */
-  border-radius: 0.1rem;           /* rounded corners */
-  background-color: #fff;       /* white background */
-  color: #333;                  /* text color */
+  border: 1px solid #ccc;      
+  border-radius: 0.1rem;       
+  background-color: #fff;      
+  color: #333;                 
   font-size: 1rem;
   cursor: pointer;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -36,47 +39,53 @@
 
 /* Style individual options (limited in most browsers) */
 .filter-select option[value="pending"] {
-  color: #d97706;  /* amber / orange */
+  color: #d97706;
 }
 .filter-select option[value="approved"] {
-  color: #059669;  /* green */
+  color: #059669;
 }
 .filter-select option[value="cancelled"] {
-  color: #dc2626;  /* red */
+  color: #dc2626;
 }
 
+/* ================= No Reservation ================= */
 .no-reservation {
-    margin-top: 15rem;
+  margin-top: 15rem;
+  text-align: center;
 }
 
 .no-reservation h6 {
-    font-size: medium;
-    text-align: center;
-    font-weight: 600;
+  font-size: medium;
+  font-weight: 600;
 }
 
 .no-reservation p {
-    font-size: medium;
-    text-align: center;
+  font-size: medium;
 }
 
+/* ================= Reservations Container ================= */
 .reservations-container {  
   max-width: 1249px;
   margin: 20px auto;
+  padding: 0 1rem;
+  overflow-x: auto;   /* ✅ allows horizontal scroll */
 }
 
+/* ================= Table ================= */
 .reservation-table {
   margin-top: 5rem;  
   width: 100%;
   border-collapse: collapse;
+  min-width: 700px;  /* ✅ keeps structure readable */
 }
 
-.reservation-table th{
+.reservation-table th {
   border-bottom: 1px solid #ddd;
   padding: 12px;
   height: 45px;
   font-weight: 500;
   text-align: center;
+  background: #f8f8f8;
 }
 
 .reservation-table td {
@@ -86,15 +95,13 @@
   text-align: center;
 }
 
-.reservation-table th {
-  background: #f8f8f8;
-}
-
-/* STATUS COLORS */
+/* ================= Status Colors ================= */
 .status {
   margin-left: 40px;
-  font-weight: light; 
+  font-weight: light;
+  background-color: #fff;
 }
+
 .status.pending {
   color: #f2994a;
 }
@@ -104,6 +111,8 @@
 .status.cancelled {
   color: #d84949;
 }
+
+/* ================= Action Modal ================= */
 .action-wrapper {
   position: relative;
   display: inline-block;
@@ -141,4 +150,61 @@
 }
 .border-btn:hover {
   background: #f0f0f0;
+}
+
+/* ================= Responsive Breakpoints ================= */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .reservation-status h3 {
+    font-size: small;
+  }
+  .filter-select {
+    width: 100%;
+    margin-left: 0;
+  }
+  .status {
+    margin-left: 0;
+  }
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+  .reservation-status {
+    margin-top: 2rem;
+  }
+  .reservation-table {
+    margin-top: 2rem;
+  }
+  .no-reservation {
+    margin-top: 5rem;
+  }
+  .no-reservation h6 {
+    font-size: small;
+  }
+  .no-reservation p {
+    font-size: small;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .reservation-status h3 {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  .filter-select {
+    font-size: 0.85rem;
+    height: 45px;
+  }
+  .reservation-table th,
+  .reservation-table td {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+  .border-btn {
+    font-size: 12px;
+    height: auto;
+    padding: 5px 10px;
+  }
 }

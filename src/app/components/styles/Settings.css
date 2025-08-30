@@ -1,7 +1,8 @@
 .setting {
-    margin-top: 3rem;
-    margin-left: 20rem;
-    width: 1240px;
+  margin-top: 3rem;
+  max-width: 1240px;
+  width: 100%;
+  margin-inline: auto;
 }
 
 .settings-page {
@@ -19,7 +20,17 @@
   display: flex;
   gap: 2rem;
   margin-bottom: -2px;
+  border-bottom: 1px solid #ddd;
 }
+
+.settings-tabs a { 
+  padding-bottom: 0.5rem;
+  text-decoration: none;
+  color: black; }
+
+  .settings-tabs a.active { 
+  color: red; 
+  border-bottom: 2px solid red; }
 
 .settings-tabs .tab {
   text-decoration: none;
@@ -44,19 +55,21 @@
   font-weight: 400;
 }
 
+/* ================= Form Styles ================= */
 .form-div {
-    width: 1073px;
-    height: 450px;
-    border: 1px solid rgb(230, 222, 222);
-    border-radius: 0.8rem;
+  width: 100%;
+  max-width: 1073px;
+  border: 1px solid rgb(230, 222, 222);
+  border-radius: 0.8rem;
+  box-sizing: border-box;
+  padding: 2rem; /* added so content doesn’t touch edges */
 }
+
 .form-container {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-  margin-left: 3rem;
+  margin: 2rem 0 2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem; /* 3rem gap between fields */
+  gap: 3rem; /* space between fields */
   max-width: 700px;
 }
 
@@ -64,11 +77,13 @@
   display: flex;
   align-items: center;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .form-row label {
   flex: 1;
   font-weight: 400;
+  min-width: 120px;
 }
 
 .form-row input {
@@ -78,14 +93,19 @@
   border-radius: 6px;
   width: 100%;
 }
+
 .bank {
-  margin-left: 10.5rem;
+  margin-left: 0;
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   width: 100%;
 }
-.save-btn {
+
+/* ================= Buttons ================= */
+.save-btn,
+.save-last-btn,
+.btn-save {
   margin-top: 2rem;
   padding: 0.8rem 1.5rem;
   background: #e22e35;
@@ -96,52 +116,30 @@
   cursor: pointer;
 }
 
-.save-btn:hover {
+.save-btn:hover,
+.save-last-btn:hover,
+.btn-save:hover {
   background: darkred;
 }
 
-.settings-page {
-  padding: 2rem;
+.save-last-btn {
+  float: right;
+  margin-top: 1rem;
 }
 
-.settings-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.settings-tabs {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #ddd;
-}
-
-.settings-tabs a {
-  padding-bottom: 0.5rem;
-  text-decoration: none;
-  color: black;
-}
-
-.settings-tabs a.active {
-  color: red;
-  border-bottom: 2px solid red;
-}
-
-.section-title {
-  font-size: 1.2rem;
-  margin: 1rem 0;
-}
-
+/* ================= Communication Section ================= */
 .communication {
-    margin-top: 3rem;
-    margin-left: 20rem;
-    width: 1244px;
+  margin-top: 3rem;
+  width: 100%;
+  max-width: 1244px;
 }
+
 .comm-container {
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 1.5rem;
-  width: 549px;
+  max-width: 549px;
+  width: 100%;
   height: 541px;
 }
 
@@ -156,7 +154,7 @@
   margin: 0.8rem 0;
 }
 
-/* Toggle Switch */
+/* ================= Toggle Switch ================= */
 .switch {
   position: relative;
   display: inline-block;
@@ -197,18 +195,60 @@
 .switch input:checked + .slider:before {
   transform: translateX(26px);
 }
-.save-last-btn {
-  margin-top: 2rem;
-  padding: 0.8rem 1.5rem;
-  background: #e22e35;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  float: right;
-  margin-top: 1rem;
+
+/* ================= Responsive Breakpoints ================= */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .form-div {
+    padding: 1.5rem;
+  }
+
+  .form-container {
+    max-width: 100%;
+    margin-left: 0; /* remove side gap on smaller screens */
+  }
+
+  .comm-container {
+    max-width: 100%;
+  }
 }
 
-.save-btn:hover {
-  background: darkred;
+/* Mobile landscape */
+@media (max-width: 768px) {
+  .settings-tabs {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .form-row label {
+    min-width: auto;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .settings-header,
+  .profile-header {
+    font-size: 1rem;
+  }
+
+  .settings-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .save-btn,
+  .save-last-btn,
+  .btn-save {
+    width: 100%;
+    text-align: center;
+    float: none; /* override float on mobile */
+  }
 }

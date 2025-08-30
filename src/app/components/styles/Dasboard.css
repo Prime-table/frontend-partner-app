@@ -1,161 +1,204 @@
+/* =================== Shared container widths & centering =================== */
+.partner,
+.partner-grouping,
+.no-reservation,
+.alert,
+.recent,
+.dash-earnings,
+.bookings-table-container {
+  max-width: 1240px;
+  width: 100%;
+  margin-inline: auto;   /* centers horizontally */
+  box-sizing: border-box;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* =================== Partner =================== */
 .partner {
-    margin-top: 5rem;
-    margin-left: 20rem;
-    font-size: x-large;
-    font-weight: 600;
+  margin-top: 5rem;
+  font-size: x-large;
+  font-weight: 600;
+  text-align: left;
 }
 
+/* =================== Partner Grouping (Responsive Grid) =================== */
 .partner-grouping {
-    margin-top: 2rem;
-    margin-left: 20rem;
-    margin-right: 20rem;
-    display: flex;
-    gap: 1.5rem;
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* ✅ always 4 on large screens */
+  gap: 1.5rem;
+  justify-content: center;
 }
 
+/* Partner card styling stays the same */
 .partner-style {
-    display: flex;
-    gap: 0.5rem;
-    border: 1px solid rgb(230, 222, 222);
-    border-radius: 0.8rem;
-    width: 292px;
-    height: 118px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgb(230, 222, 222);
+  border-radius: 0.8rem;
+  /* padding: 1rem; */
+  background: #fff;
+  max-width: 298px;
+  height: 118px;
+  width: 100%; /* ✅ stretch within grid cell */
 }
 
 .partner-style p {
-    font-size: large;
-    font-weight: 400;
+  font-size: large;
+  font-weight: 400;
 }
 
 .icon {
-    margin-top: 3rem;
-    margin-left: 1.5rem;
-    font-size: larger;
+  font-size: larger;
 }
 
+/* Status pills (used in partner tiles/tables) */
 .status {
-    display: flex;
-    gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  line-height: 1;
+  white-space: nowrap;
+  background: #fff;
+  color: #333;
 }
 
 .status-filled {
-    display: flex;
-    gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
+/* =================== Empty state / No reservation =================== */
 .no-reservation {
-    margin-left: 20rem;
-    margin-top: 2rem;
-    width: 1246px;
-    height: 306px;
-    border: 1px solid rgb(230, 222, 222);
-    border-radius: 0.8rem;
+  margin-top: 2rem;
+  border: 1px solid rgb(230, 222, 222);
+  border-radius: 0.8rem;
+  background: #fff;
+  padding: 2rem;
+  text-align: center;
 }
 
 .no-reservation h4 {
-    text-align: center;
-    margin-top: 5rem;
-    font-size: x-large;
-    font-weight: 600;
+  margin-top: 1rem;
+  font-size: x-large;
+  font-weight: 600;
 }
 
 .no-reservation p {
-    text-align: center;
-    font-size: medium;
-    font-weight: 400;
+  font-size: medium;
+  font-weight: 400;
 }
 
+/* =================== Alert box =================== */
 .alert {
-    margin-top: 1rem;
-    margin-left: 20rem;
-    width: 1246px;
-    height: 55px;
-    background-color: #fff9f5;
-    border-radius: 0.8rem;
+  margin-top: 1rem;
+  background-color: #fff9f5;
+  border-radius: 0.8rem;
+  padding: 0.75rem 1rem;
 }
 
 .alert-text {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    margin-left: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .alert-icon {
-    background-color: #f2994a;
-    border-radius: 50%;
-    color: #fff;
+  background-color: #f2994a;
+  border-radius: 50%;
+  color: #fff;
+  padding: 0.5rem;
 }
+
+/* =================== Recent table/card =================== */
 .recent {
-    margin-top: 2rem;
-    margin-left: 20rem;
-    margin-bottom: 5rem;
-    width: 1246px;
-    height: 468px;
-    border: 1px solid rgb(230, 222, 222);
-    border-radius: 0.8rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  border: 1px solid rgb(230, 222, 222);
+  border-radius: 0.8rem;
+  background: #fff;
+  padding: 1rem 0;
 }
 
 .recent-filter {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap; /* ✅ responsive */
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-inline: 2rem;
 }
 
 .recent-filter h4 {
-    font-size: large;
-    font-weight: 400;
+  font-size: large;
+  font-weight: 400;
 }
+
 .recent-table {
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-bottom: 2rem;
+  margin: 1rem 2rem 2rem 2rem;
+  overflow-x: auto; /* ✅ scroll on small screens */
 }
 
 .view-select {
-    border: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
 }
 
+/* =================== Earnings / Payout filters =================== */
 .dash-earnings {
-    margin-top: 5rem;
-    margin-left: 20rem;
-    margin-right: 20rem;
-    margin-bottom: 5rem;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 
 .earnings h3 {
-    font-size: x-large;
-    font-weight: 500;
+  font-size: x-large;
+  font-weight: 500;
 }
 
 .payout {
   display: flex;
-  gap: 2rem; /* spacing between filters */
+  gap: 1rem;
+  flex-wrap: wrap;  /* ✅ responsive row */
   align-items: center;
+  margin-right: 1rem;
 }
 
-
+/* Earnings cards row */
 .cards-container {
   display: flex;
   gap: 20px;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;         /* ✅ responsive cards */
+  justify-content: center; /* center on wide and narrow */
 }
 
 .card {
-  width: 398px;
+  flex: 1 1 300px; /* grows/shrinks; basis 300px */
+  max-width: 398px;
+  min-width: 260px;
   height: 98px;
   display: flex;
   align-items: center;
   padding: 15px;
   border-radius: 12px;
+  background: #fff;
 }
 
 .icon {
   font-size: 20px;
   padding: 12px;
-  margin-bottom: 2.3rem;
   border-radius: 7%;
   margin-right: 15px;
   display: flex;
@@ -163,38 +206,18 @@
   justify-content: center;
 }
 
-/* Background colors */
-.light-green {
-  background-color: #d4f5d0;
-}
-.green {
-  background-color: #27ae60;
-}
+/* Color helpers */
+.light-green { background-color: #d4f5d0; }
+.green       { background-color: #27ae60; }
+.light-orange{ background-color: #ffeedf; }
+.orange      { background-color: #f2994a; }
+.light-gray  { background-color: #f0f0f0; }
+.white       { color: white; }
+.black       { color: white; } /* as provided */
+.white-text  { color: white; }
+.white-gray  { background-color: #bdbdbd; }
 
-.light-orange {
-  background-color: #ffeedf;
-}
-.orange {
-  background-color: #f2994a;
-}
-
-.light-gray {
-  background-color: #f0f0f0;
-}
-.white {
-  color: white;
-}
-.black {
-  color: white;
-}
-.white-text {
-  color: white;
-}
-.white-gray {
-    background-color: #bdbdbd;
-}
-
-/* Text styles */
+/* Card text */
 .title {
   font-size: 18px;
   margin: 0;
@@ -203,11 +226,11 @@
 
 .amount {
   font-size: 18px;
-  margin-top: 0.5rem;
-  font-weight: 400;
   margin: 3px 0 0 0;
+  font-weight: 400;
 }
 
+/* Filters */
 .view-earnings {
   width: 309px;
   height: 62px;
@@ -218,7 +241,9 @@
   text-align: center;
   outline: none;
   cursor: pointer;
+  background: #fff;
 }
+
 .view-earnings-date {
   width: 199px;
   height: 62px;
@@ -229,28 +254,28 @@
   text-align: center;
   outline: none;
   cursor: pointer;
+  background: #fff;
 }
 
+/* =================== Bookings table =================== */
 .bookings-table-container {
-    margin-top: 3rem;
-    width: 1266px;
-    height: 390px;
-    border: 1px solid rgb(230, 222, 222);
-    border-radius: 0.8rem;
+  margin-top: 3rem;
+  border: 1px solid rgb(230, 222, 222);
+  border-radius: 0.8rem;
+  background: #fff;
+  overflow-x: auto; /* ✅ horizontal scroll if needed */
 }
 
 .bookings-table {
-  width: 1240px;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-top: 4rem;
+  width: 100%;
+  min-width: 720px;             /* keeps columns readable */
   border-collapse: collapse;
   text-align: left;
 }
 
 .bookings-table th,
 .bookings-table td {
-  padding: 1.4rem 1rem;
+  padding: 1.2rem 1rem;
   border-bottom: 1px solid #ddd;
 }
 
@@ -263,18 +288,93 @@
 .bookings-table th.withdraw-head {
   background-color: #e53935; /* bright red */
   color: white;
-  width: 1.3rem;
   border-radius: 0.45rem;
   padding-top: 3px;
 }
-.status.paid {
-  color: #28a745; /* Green */
+
+/* Status colors */
+.status.paid { color: #28a745; }       /* Green */
+.status.in-escrow { color: #dc3545; }  /* Red */
+.status.pending { color: #fd7e14; }    /* Orange */
+
+/* =================== Responsive Image Container =================== */
+.image-container {
+  display: flex;
+  flex-wrap: wrap;   /* allows wrapping */
+  gap: 0.8rem;
+  margin-left: 1.9rem;
+  margin-right: 1.9rem;
+  margin-bottom: 1.5rem;
 }
 
-.status.in-escrow {
-  color: #dc3545; /* Red */
+.first-image,
+.second-image,
+.third-image {
+  background-size: cover;
+  background-position: center;
+  border-radius: 1.5rem;
+  flex: 1 1 100%;       /* full width on small screens */
+  min-height: 180px;
 }
 
-.status.pending {
-  color: #fd7e14; /* Orange */
+/* Tablet + desktop sizes */
+@media (min-width: 640px) {
+  .first-image {
+    flex: 1 1 220px;
+    height: 202px;
+  }
+  .second-image {
+    flex: 1 1 320px;
+    height: 202px;
+  }
+  .third-image {
+    flex: 1 1 480px;
+    height: 202px;
+  }
+}
+
+/* =================== Responsive Breakpoints =================== */
+
+/* Large tablets & down */
+@media (max-width: 1200px) {
+  .recent-table { margin-inline: 1rem; }
+  .recent-filter { padding-inline: 1rem; }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+  .partner { text-align: center; }
+  .no-reservation { padding: 1.5rem; }
+}
+
+/* Mobile landscape */
+@media (max-width: 768px) {
+  .partner { font-size: large; }
+  .cards-container { justify-content: stretch; }
+  .card { flex: 1 1 100%; max-width: none; }       /* cards full-width */ 
+  .view-earnings, .view-earnings-date { width: 100%; }
+  .recent-filter { flex-direction: column; align-items: stretch; }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .partner { font-size: medium; }
+  .no-reservation h4 { font-size: large; }
+  .no-reservation p { font-size: small; }
+  .earnings h3 { font-size: large; }
+  .partner-style { width: 100%; }                  /* partner cards full-width */
+}
+
+/* Tablet breakpoint – 2 per row */
+@media (max-width: 992px) {
+  .partner-grouping {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile breakpoint – 1 per row */
+@media (max-width: 600px) {
+  .partner-grouping {
+    grid-template-columns: 1fr;
+  }
 }

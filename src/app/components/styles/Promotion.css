@@ -2,9 +2,11 @@
   background: #fff;
   padding: 2rem;
   border-radius: 10px;
-  width: 1240px;
-  height: 578px;
-  margin-left: 20rem;
+  max-width: 1240px;   /* instead of fixed width */
+  width: 100%;         /* responsive */
+  min-height: 578px;   /* use min-height instead of fixed height */
+  margin: 2rem auto;   /* center it */
+  box-sizing: border-box;
 }
 
 .promotion-form-container h2 {
@@ -35,15 +37,19 @@
   height: 3rem;
   border: 1px solid #ccc;
   border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-dates {
   display: flex;
   gap: 0.7rem;
+  flex-wrap: wrap; /* ensures responsiveness */
 }
 
 .date-input {
-  width: 616px;
+  flex: 1;
+  min-width: 220px; /* prevent shrinking too small */
   height: 54px;
   padding: 0 12px;
   border: 1px solid #ccc;
@@ -59,17 +65,19 @@
   border-color: #6c63ff; /* highlight color when active */
   box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
 }
+
 .save-btn {
   background-color: #e22e35;
-  width: 184px;
+  max-width: 184px;
+  width: 100%;
   height: 60px;
   color: #fff;
   padding: 0.8rem 1.5rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  float: left;
   transition: background 0.3s ease;
+  margin-top: 1rem;
 }
 
 .save-btn:hover {
@@ -84,6 +92,7 @@
   height: 100vh;
   text-align: center;
   gap: 20px;
+  padding: 1rem;
 }
 
 .icon-wrapper {
@@ -110,7 +119,8 @@
 
 .view-reservation-btn {
   background-color: #e22e35;
-  width: 184px;
+  max-width: 184px;
+  width: 100%;
   height: 60px;
   color: white;
   border: none;
@@ -123,4 +133,57 @@
 
 .view-reservation-btn:hover {
   background-color: darkred;
+}
+
+/* ================= Responsive Breakpoints ================= */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .promotion-form-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .form-dates {
+    flex-direction: column;
+  }
+
+  .date-input {
+    width: 100%;
+  }
+
+  .save-btn,
+  .view-reservation-btn {
+    width: 100%;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 768px) {
+  .promotion-form-container {
+    padding: 1rem;
+  }
+
+  .promotion-form-container h2 {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .promotion-form-container {
+    padding: 0.8rem;
+  }
+
+  .promotion-form-container h2 {
+    font-size: 0.9rem;
+  }
+
+  .promotion-saved h2 {
+    font-size: 18px;
+  }
+
+  .promotion-saved p {
+    font-size: 12px;
+  }
 }

@@ -326,32 +326,121 @@
   padding-left: 0.8rem;
  }
 
- .image-container {
+.image-container {
   display: flex;
   gap: 0.8rem;
   margin-left: 1.9rem;
   margin-right: 1.9rem;
   margin-bottom: 1.5rem;
- }
+  flex-wrap: wrap; /* allows images to stack on small screens */
+}
 
- .first-image {
-  background-image: url('../../../../public/images/Bacon\ Burgers@2x.png');
-  width: 228px;
+.image-container div {
+  flex: 1; /* allow each image to grow/shrink */
+  min-width: 200px; /* prevent them from getting too tiny */
   height: 202px;
   border-radius: 1.5rem;
- }
+  background-size: cover;
+  background-position: center;
+}
 
- .second-image {
-  background-image: url('../../../../public/images/Bacon\ Burgers@2x\ \(1\).png');
-  width: 329px;
-  height: 202px;
-  border-radius: 1.5rem;
- }
+.first-image {
+  background-image: url('../../../../public/images/Bacon Burgers@2x.png');
+}
 
- .third-image {
-  background-image: url('../../../../public/images/Frame\ 177.png');
-  width: 489px;
-  height: 202px;
-  border-radius: 1.5rem;
- }
+.second-image {
+  background-image: url('../../../../public/images/Bacon Burgers@2x (1).png');
+}
 
+.third-image {
+  background-image: url('../../../../public/images/Frame 177.png');
+}
+
+
+@media (max-width: 1024px) {
+  .premium-price-row {
+    gap: 2rem;
+  }
+  .profile-edit {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hours-upload-row {
+    flex-direction: column;
+  }
+  .photo-upload, 
+  .photo-upload-small {
+    width: 100%;
+  }
+  .premium-price-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .profile-edit {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  .image-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 1rem;
+  }
+  .btn-save, .edit-button {
+    width: 100%;
+    text-align: center;
+  }
+  .reservation-container,
+  .address-container,
+  .description-container {
+    margin: 1rem;
+  }
+  .first-image, .second-image, .third-image {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Reservation stats → 2x2 grid */
+  .reservation-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* Address and Hours stack vertically */
+  .address-container {
+    flex-direction: column;
+  }
+
+  /* Description and Premium stack vertically */
+  .description-container {
+    flex-direction: column;
+  }
+
+  /* Images in 2 columns instead of 3 */
+  .image-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Reservation stats → full column */
+  .reservation-container {
+    grid-template-columns: 1fr;
+  }
+
+  /* Images → single column full width */
+  .image-container {
+    grid-template-columns: 1fr;
+  }
+}

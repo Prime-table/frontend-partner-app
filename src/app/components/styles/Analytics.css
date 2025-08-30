@@ -1,8 +1,10 @@
 .analytics-section {
-    margin-left: 20rem;
-    max-width: 1246px;
-    height: 603px;
+  max-width: 1246px;
+  height: auto; /* let height adjust naturally */
+  margin: auto;
+  padding: 1rem;
 }
+
 .analytics {
   margin: 2rem;
 }
@@ -11,17 +13,21 @@
   font-size: 1.5rem;
   font-weight: 500;
   margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .analytics-container {
   display: flex;
+  flex-wrap: wrap; /* allow wrapping on smaller screens */
   gap: 1.5rem;
-
+  justify-content: center;
 }
 
 .analytics-card {
-  width: 240px;
-  height: 100px;
+  flex: 1 1 240px; /* flexible width */
+  min-width: 200px;
+  max-width: 300px;
+  height: auto;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 1rem;
@@ -52,16 +58,70 @@
 }
 
 .chart-wrapper {
-  width: 90%;
+  width: 100%;
   margin: 2rem auto;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 12px;
   background: #fff;
+  overflow-x: auto; /* makes chart scrollable on very small screens */
 }
+
 .analytics-heading {
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  padding-left: 3rem;
+  padding-left: 1rem;
   font-weight: 400;
+  text-align: center;
+}
+
+/* ===================== Responsive Breakpoints ===================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .analytics-title {
+    font-size: 1.3rem;
+  }
+
+  .analytics-heading {
+    font-size: 1.2rem;
+    padding-left: 0;
+  }
+
+  .analytics-container {
+    justify-content: center;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 768px) {
+  .analytics {
+    margin: 1rem;
+  }
+
+  .analytics-card {
+    flex: 1 1 100%; /* full width */
+    max-width: 100%;
+  }
+
+  .chart-wrapper {
+    padding: 0.5rem;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .analytics-title {
+    font-size: 1.1rem;
+  }
+
+  .analytics-heading {
+    font-size: 1rem;
+  }
+
+  .analytics-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }

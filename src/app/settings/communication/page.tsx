@@ -74,7 +74,7 @@ const CommunicationReference = () => {
         <a href="/settings/profile-settings">Profile</a>
         <a href="/settings/payout-details">Payout Details</a>
         <a href="/settings/security">Security</a>
-        <a href="/settings/communication-reference" className="active">
+        <a href="/settings/communication" className="active"> 
           Communication Reference
         </a>
       </div>
