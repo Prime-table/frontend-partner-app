@@ -30,7 +30,13 @@ const LoginPage = () => {
 
   return (
     <div className="auth-page">
-      <Image src="/logo.png" alt="Prime Table Logo" width={200} height={80} className="auth-logo" />
+      <Image
+        src="/logo.png"
+        alt="Prime Table Logo"
+        width={200}
+        height={80}
+        className="auth-logo"
+      />
 
       <div className="auth-container">
         <h1 className="auth-title">Partner Login</h1>
@@ -48,14 +54,16 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="auth-input"
         />
-        <button className="auth-btn" onClick={handleLogin}>Login</button>
+        <button className="auth-btn" onClick={handleLogin}>
+          Login
+        </button>
 
         <p className="auth-link" onClick={() => alert("Forgot password?")}>
           Forgot password?
         </p>
 
         <p className="auth-switch">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span onClick={() => router.push("/registration")}>Sign Up</span>
         </p>
       </div>
