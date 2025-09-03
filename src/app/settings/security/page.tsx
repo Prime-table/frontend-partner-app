@@ -16,19 +16,22 @@ const SecuritySettings = () => {
   });
 
   // Handle input change
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   // Handle save changes (submit to API)
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:1990/api/security/update", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:1990/api/security/update",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         // Navigate to Communication Reference after success
@@ -53,10 +56,18 @@ const SecuritySettings = () => {
 
           {/* Tab Navigation */}
           <div className="settings-tabs">
-            <Link href="/settings/profile-settings" className="tab">Profile</Link>
-            <Link href="/settings/payout-details" className="tab">Payout Details</Link>
-            <Link href="/settings/security" className="tab active">Security</Link>
-            <Link href="/settings/communication" className="tab">Communication Reference</Link>
+            <Link href="/settings/profile-settings" className="tab">
+              Profile
+            </Link>
+            <Link href="/settings/payout-details" className="tab">
+              Payout Details
+            </Link>
+            <Link href="/settings/security" className="tab active">
+              Security
+            </Link>
+            <Link href="/settings/communication" className="tab">
+              Communication Reference
+            </Link>
           </div>
           <hr className="tab-line" />
 
@@ -65,7 +76,6 @@ const SecuritySettings = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-div">
               <div className="form-container">
-
                 <div className="form-row">
                   <label>Current Password</label>
                   <input
@@ -98,7 +108,6 @@ const SecuritySettings = () => {
                     onChange={handleChange}
                   />
                 </div>
-
               </div>
             </div>
 
