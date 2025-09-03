@@ -5,7 +5,7 @@ import "../components/styles/Reservation.css";
 import Navbar from "../components/Navbar/Navbar";
 
 const ReservationTable = () => {
-  const [openModal, setOpenModal] = useState(null);
+  const [openModal, setOpenModal] = useState<number | null>(null);
   const [filter, setFilter] = useState("all");
 
   // sample data
@@ -134,7 +134,7 @@ const ReservationTable = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="7">No reservations found</td>
+                <td colSpan={7}>No reservations found</td>
               </tr>
             )}
           </tbody>

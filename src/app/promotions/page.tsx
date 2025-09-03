@@ -17,13 +17,14 @@ const PromotionForm = () => {
     router.push("/reservations"); // ✅ navigate to reservations page
   };
 
-
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setPromotion({ ...promotion, [name]: value });
   };
 
-  const handleSavePromotion = async (e) => {
+  const handleSavePromotion = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // API endpoint for saving promotions
@@ -87,7 +88,10 @@ const PromotionForm = () => {
           </div>
 
           {/* Start & End Date */}
-          <div className="form-dates" style={{ display: "flex", gap: "0.4rem" }}>
+          <div
+            className="form-dates"
+            style={{ display: "flex", gap: "0.4rem" }}
+          >
             <div className="form-group">
               <input
                 type="date"

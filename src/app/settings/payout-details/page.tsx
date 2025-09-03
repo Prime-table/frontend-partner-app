@@ -17,12 +17,14 @@ const PayoutSettings = () => {
   });
 
   // Handle input change
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   // Handle save changes (submit to API)
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:1990/api/payout/update", {
@@ -54,10 +56,18 @@ const PayoutSettings = () => {
 
           {/* Tab Navigation */}
           <div className="settings-tabs">
-            <Link href="/settings/profile-settings" className="tab">Profile</Link>
-            <Link href="/settings/payout-details" className="tab active">Payout Details</Link>
-            <Link href="/settings/security" className="tab">Security</Link>
-            <Link href="/settings/communication" className="tab">Communication Reference</Link>
+            <Link href="/settings/profile-settings" className="tab">
+              Profile
+            </Link>
+            <Link href="/settings/payout-details" className="tab active">
+              Payout Details
+            </Link>
+            <Link href="/settings/security" className="tab">
+              Security
+            </Link>
+            <Link href="/settings/communication" className="tab">
+              Communication Reference
+            </Link>
           </div>
           <hr className="tab-line" />
 
@@ -66,7 +76,6 @@ const PayoutSettings = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-div">
               <div className="form-container">
-
                 <div className="form-row">
                   <label>Bank Name</label>
                   <select
@@ -115,7 +124,6 @@ const PayoutSettings = () => {
                     onChange={handleChange}
                   />
                 </div>
-
               </div>
             </div>
 
