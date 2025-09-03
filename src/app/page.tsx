@@ -1,10 +1,11 @@
-import HomePage from "./pages/home/page";
-
+// import HomePage from "./pages/home/page";
+import WelcomePage from "./welcome/page";
 
 export default function Home() {
   return (
     <div>
-      <HomePage />
+      {/* <HomePage /> */}
+      <WelcomePage />
     </div>
   );
 }
