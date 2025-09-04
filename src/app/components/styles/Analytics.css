@@ -56,15 +56,16 @@
   font-weight: 400;
   margin: 0;
 }
-
 .chart-wrapper {
   width: 100%;
+  max-width: 100%;          /* ✅ prevent overflowing parent */
   margin: 2rem auto;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 12px;
   background: #fff;
-  overflow-x: auto; /* makes chart scrollable on very small screens */
+  overflow-x: auto;         /* ✅ scroll if chart is wider than screen */
+  box-sizing: border-box;   /* ✅ include padding in width */
 }
 
 .analytics-heading {
@@ -123,5 +124,31 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+}
+
+/* Tablet screens */
+@media (max-width: 1028px) {
+  .chart-wrapper {
+    padding: 0.75rem;       /* reduce padding */
+    margin: 1.5rem auto;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 768px) {
+  .chart-wrapper {
+    padding: 0.5rem;
+    margin: 1rem auto;
+  }
+}
+
+/* Smallest devices */
+@media (max-width: 480px) {
+  .chart-wrapper {
+    padding: 0.25rem;
+    margin: 0.5rem auto;
+    border-radius: 8px;     /* softer radius */
+    overflow: hidden;
   }
 }

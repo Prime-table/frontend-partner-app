@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <Image src="/logo.png" alt="Prime Table Logo" width={120} height={40} />
+        <Image src="/images/logo.png" alt="Prime Table Logo" width={120} height={40} />
       </div>
 
       <ul className="navbar-menu">
