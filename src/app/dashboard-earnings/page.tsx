@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import "../components/styles/Dasboard.css";
 import { FaSackDollar } from "react-icons/fa6";
@@ -7,33 +7,17 @@ import { PiUserRectangleThin } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";
 
 const DashboardEarnings = () => {
-  const [filter, setFilter] = useState({
-    status: "all",
-    date: "",
-  });
+  const [filter, setFilter] = useState({ status: "all", date: "" });
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [cards, setCards] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Convert yyyy-mm-dd → dd/mm/yyyy
-  function formatDate(isoDate: string) {
-    if (!isoDate) return "";
-    const [year, month, day] = isoDate.split("-");
-    return `${day}/${month}/${year}`;
-  }
-
-  // Format number/string into Naira currency
-  function formatNaira(value: string) {
-    if (!value) return "₦0";
-    const num = Number(value.toString().replace(/,/g, "")); // remove commas if any
-    return num.toLocaleString("en-NG", {
-      style: "currency",
-      currency: "NGN",
-    });
-  }
-
-  const bookings = [
+  // Fallback static data
+  const fallbackBookings = [
     {
       id: 1,
       booking_id: "#SK-1015",
-      date: "2025-07-24", // use ISO format (yyyy-mm-dd) so <input type="date"> matches
+      date: "2025-07-24",
       amount: "15,000.00",
       status: "Paid",
       withdrawal_earnings: "",
@@ -55,7 +39,8 @@ const DashboardEarnings = () => {
       withdrawal_earnings: "",
     },
   ];
-  const cards = [
+
+  const fallbackCards = [
     {
       id: 1,
       title: "Total Earning",
@@ -85,21 +70,54 @@ const DashboardEarnings = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:1990/mnb/api/dashboard");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setBookings(data.bookings || fallbackBookings);
+        setCards(data.cards || fallbackCards);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        setBookings(fallbackBookings);
+        setCards(fallbackCards);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Convert yyyy-mm-dd → dd/mm/yyyy
+  function formatDate(isoDate: string) {
+    if (!isoDate) return "";
+    const [year, month, day] = isoDate.split("-");
+    return `${day}/${month}/${year}`;
+  }
+
+  // Format into Naira
+  function formatNaira(value: string) {
+    if (!value) return "₦0";
+    const num = Number(value.toString().replace(/,/g, ""));
+    return num.toLocaleString("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    });
+  }
+
   const filteredBookings = bookings.filter((booking) => {
     const matchesStatus =
       filter.status === "all" ||
       booking.status.toLowerCase() === filter.status.toLowerCase();
 
-    const matchesDate = !filter.date || booking.date === filter.date; // only match if a date is picked
-
+    const matchesDate = !filter.date || booking.date === filter.date;
     return matchesStatus && matchesDate;
   });
 
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
+      <Navbar />
       <div className="dash-earnings">
         <div className="earnings">
           <h3>Earnings and Payouts</h3>
@@ -108,7 +126,6 @@ const DashboardEarnings = () => {
         <div className="payout">
           {/* Status Filter */}
           <div>
-            <label htmlFor="status"></label>
             <select
               id="status"
               className="view-earnings"
@@ -118,13 +135,12 @@ const DashboardEarnings = () => {
               <option value="all">View All</option>
               <option value="pending">Status: Pending</option>
               <option value="paid">Status: Paid</option>
-              <option value="in Escrow">Status: In Escrow</option>
+              <option value="in escrow">Status: In Escrow</option>
             </select>
           </div>
 
-          {/* Dynamic Date Filter */}
+          {/* Date Filter */}
           <div>
-            <label htmlFor="date"></label>
             <select
               id="date"
               className="view-earnings-date"
@@ -143,6 +159,7 @@ const DashboardEarnings = () => {
           </div>
         </div>
 
+        {/* Cards */}
         <div className="cards-setting">
           <div className="cards-container">
             {cards.map((card) => (
@@ -159,6 +176,7 @@ const DashboardEarnings = () => {
           </div>
         </div>
 
+        {/* Bookings Table */}
         <div className="bookings-table-container">
           <table className="bookings-table">
             <thead>
@@ -167,27 +185,33 @@ const DashboardEarnings = () => {
                 <th>Date</th>
                 <th>Status</th>
                 <th>Amount</th>
-                <th className="withdraw-head">Withdrawa@Earnings</th>
+                <th className="withdraw-head">Withdrawal Earnings</th>
               </tr>
             </thead>
             <tbody>
-              {filteredBookings.map((b) => (
-                <tr key={b.booking_id}>
-                  <td>{b.booking_id}</td>
-                  <td>{formatDate(b.date)}</td>
-                  <td>
-                    <span
-                      className={`status ${b.status
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                    >
-                      {b.status}
-                    </span>
-                  </td>
-                  <td>{formatNaira(b.amount)}</td>
-                  <td>{b.withdrawal_earnings}</td>
+              {loading ? (
+                <tr>
+                  <td colSpan={5}>Loading...</td>
                 </tr>
-              ))}
+              ) : (
+                filteredBookings.map((b) => (
+                  <tr key={b.booking_id}>
+                    <td>{b.booking_id}</td>
+                    <td>{formatDate(b.date)}</td>
+                    <td>
+                      <span
+                        className={`status ${b.status
+                          .toLowerCase()
+                          .replace(" ", "-")}`}
+                      >
+                        {b.status}
+                      </span>
+                    </td>
+                    <td>{formatNaira(b.amount)}</td>
+                    <td>{b.withdrawal_earnings || "-"}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

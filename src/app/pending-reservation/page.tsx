@@ -1,15 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import "../components/styles/Reservation.css";
 import Navbar from "../components/Navbar/Navbar";
 
+interface Reservation {
+  id: number;
+  date: string;
+  time: string;
+  size: number;
+  name: string;
+  table: string;
+  status: string;
+}
+
 const ReservationTable = () => {
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [filter, setFilter] = useState("all");
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // sample data
-  const reservations = [
+  // fallback sample data (used if fetch fails)
+  const sampleData: Reservation[] = [
     {
       id: 1,
       date: "2025-08-22",
@@ -37,7 +49,7 @@ const ReservationTable = () => {
       table: "T4",
       status: "Pending",
     },
-    {
+     {
       id: 4,
       date: "2025-08-23",
       time: "8:00 PM",
@@ -57,7 +69,26 @@ const ReservationTable = () => {
     },
   ];
 
-  // ✅ filter reservations based on selected option
+  // fetch reservations
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const res = await fetch("/api/reservations"); // 👈 replace with backend endpoint
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setReservations(data);
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+        setReservations(sampleData); // fallback
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
+  }, []);
+
+  // filter reservations
   const filteredReservations = reservations.filter((reservation) => {
     if (filter === "all") return true;
     return reservation.status.toLowerCase() === filter;
@@ -88,57 +119,61 @@ const ReservationTable = () => {
 
       {/* Table Section */}
       <div className="reservations-container">
-        <table className="reservation-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Size</th>
-              <th>Name</th>
-              <th>Table</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredReservations.length > 0 ? (
-              filteredReservations.map((res) => (
-                <tr key={res.id}>
-                  <td>{res.date}</td>
-                  <td>{res.time}</td>
-                  <td>{res.size}</td>
-                  <td>{res.name}</td>
-                  <td>{res.table}</td>
-                  <td>
-                    <span className={`status ${res.status.toLowerCase()}`}>
-                      {res.status}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="action-wrapper">
-                      <FiMoreVertical
-                        className="action-icon"
-                        onClick={() =>
-                          setOpenModal(openModal === res.id ? null : res.id)
-                        }
-                      />
-                      {openModal === res.id && (
-                        <div className="action-modal">
-                          <button className="border-btn">Edit</button>
-                          <button className="border-btn">Cancel</button>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
+        {loading ? (
+          <p>Loading reservations...</p>
+        ) : (
+          <table className="reservation-table">
+            <thead>
               <tr>
-                <td colSpan={7}>No reservations found</td>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Size</th>
+                <th>Name</th>
+                <th>Table</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredReservations.length > 0 ? (
+                filteredReservations.map((res) => (
+                  <tr key={res.id}>
+                    <td>{res.date}</td>
+                    <td>{res.time}</td>
+                    <td>{res.size}</td>
+                    <td>{res.name}</td>
+                    <td>{res.table}</td>
+                    <td>
+                      <span className={`status ${res.status.toLowerCase()}`}>
+                        {res.status}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="action-wrapper">
+                        <FiMoreVertical
+                          className="action-icon"
+                          onClick={() =>
+                            setOpenModal(openModal === res.id ? null : res.id)
+                          }
+                        />
+                        {openModal === res.id && (
+                          <div className="action-modal">
+                            <button className="border-btn">Edit</button>
+                            <button className="border-btn">Cancel</button>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7}>No reservations found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

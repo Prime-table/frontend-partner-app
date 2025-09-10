@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import "../components/styles/Reservation.css";
 import Navbar from "../components/Navbar/Navbar";
@@ -7,55 +7,70 @@ import Navbar from "../components/Navbar/Navbar";
 const ReservationTable = () => {
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [filter, setFilter] = useState("all");
+  const [reservations, setReservations] = useState<any[]>([]);
 
-  // sample data
-  const reservations = [
-    {
-      id: 1,
-      date: "2025/08/22",
-      time: "7:00 PM",
-      size: 4,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Approved",
-    },
-    {
-      id: 2,
-      date: "2025/08/23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      date: "2025/08/23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Approved",
-    },
-    {
-      id: 4,
-      date: "2025/08/23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Cancelled",
-    },
-    {
-      id: 5,
-      date: "2025/08/23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-  ];
+  // Fetch reservations
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch("http://localhost:1990/api/reservations");
+        if (!response.ok) throw new Error("Failed to fetch reservations");
+        const data = await response.json();
+        setReservations(data); // expects an array
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+        // fallback sample data
+        setReservations([
+          {
+            id: 1,
+            date: "2025/08/22",
+            time: "7:00 PM",
+            size: 4,
+            name: "Mecury Paul",
+            table: "T4",
+            status: "Approved",
+          },
+          {
+            id: 2,
+            date: "2025/08/23",
+            time: "8:00 PM",
+            size: 2,
+            name: "Mecury Paul",
+            table: "T4",
+            status: "Pending",
+          },
+          { id: 3,
+            date: "2025/08/23", 
+            time: "8:00 PM", 
+            size: 2, 
+            name: "Mecury Paul", 
+            table: "T4", 
+            status: "Approved", 
+          }, 
+          { 
+            id: 4, 
+            date: "2025/08/23", 
+            time: "8:00 PM", 
+            size: 2, 
+            name: "Mecury Paul", 
+            table: "T4", 
+            status: "Cancelled", 
+          }, 
+          { 
+            id: 5, 
+            date: "2025/08/23", 
+            time: "8:00 PM", 
+            size: 2, 
+            name: "Mecury Paul", 
+            table: "T4", 
+            status: "Pending", 
+          },
+        ]);
+      }
+    };
+
+    fetchReservations();
+  }, []);
 
   // ✅ filter reservations based on selected option
   const filteredReservations = reservations.filter((reservation) => {

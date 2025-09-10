@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../components/styles/Dasboard.css";
 import "../components/styles/Reservation.css";
 import Navbar from "../components/Navbar/Navbar";
@@ -9,9 +9,11 @@ import { IoAlert, IoEyeOutline } from "react-icons/io5";
 
 const DasboardFilled = () => {
   const [filter, setFilter] = useState("all");
+  const [reservations, setReservations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // sample data
-  const reservations = [
+  // ✅ fallback sample data
+  const fallbackReservations = [
     {
       id: 1,
       date: "2025/08/22",
@@ -28,7 +30,7 @@ const DasboardFilled = () => {
       size: 2,
       name: "Mecury Paul",
       table: "T4",
-      status: "Pending",
+      status: "Approved",
     },
     {
       id: 3,
@@ -37,11 +39,29 @@ const DasboardFilled = () => {
       size: 2,
       name: "Mecury Paul",
       table: "T4",
-      status: "Pending",
+      status: "Cancelled",
     },
   ];
 
-  // ✅ filter reservations based on selected option
+  // ✅ Fetch reservations from backend (fallback if fails)
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/reservations");
+        if (!res.ok) throw new Error("Failed to fetch reservations");
+        const data = await res.json();
+        setReservations(data || fallbackReservations);
+      } catch (err) {
+        console.error("Error fetching reservations:", err);
+        setReservations(fallbackReservations);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReservations();
+  }, []);
+
+  // ✅ filter reservations based on status
   const filteredReservations = reservations.filter((reservation) => {
     if (filter === "all") return true;
     return reservation.status.toLowerCase() === filter;
@@ -49,12 +69,12 @@ const DasboardFilled = () => {
 
   return (
     <div>
+      <Navbar />
       <div>
-        <Navbar />
+        <h4 className="partner">Partner Dashboard</h4>
       </div>
-      <div>
-        <h4 className="partner">Partner Dasboard</h4>
-      </div>
+
+      {/* Top Stats Section */}
       <div className="partner-grouping">
         <div className="partner-style">
           <div className="icon">
@@ -62,7 +82,7 @@ const DasboardFilled = () => {
           </div>
           <div>
             <p>Total Booking</p>
-            <p>123</p>
+            <p>{reservations.length}</p>
           </div>
         </div>
         <div className="partner-style">
@@ -71,7 +91,13 @@ const DasboardFilled = () => {
           </div>
           <div>
             <p>Incoming Reservation</p>
-            <p>10 Today</p>
+            <p>
+              {
+                reservations.filter((r) => r.status.toLowerCase() === "pending")
+                  .length
+              }{" "}
+              Today
+            </p>
           </div>
         </div>
         <div className="partner-style">
@@ -113,19 +139,22 @@ const DasboardFilled = () => {
           </div>
         </div>
       </div>
+
+      {/* Alert */}
       <div className="alert">
         <div className="alert-text">
           <IoAlert className="alert-icon" />
           <p>New reservation received!</p>
         </div>
       </div>
+
+      {/* Recent Reservations */}
       <div className="recent">
         <div className="recent-filter">
           <div>
-            <h4>Recent reservation</h4>
+            <h4>Recent reservations</h4>
           </div>
           <div>
-            <label htmlFor="status"></label>
             <select
               id="status"
               className="view-select"
@@ -139,8 +168,8 @@ const DasboardFilled = () => {
             </select>
           </div>
         </div>
+
         <div className="recent-table">
-          {/* Table Section */}
           <div className="reservations-container">
             <table className="reservation-table">
               <thead>
@@ -154,9 +183,13 @@ const DasboardFilled = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredReservations.length > 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={6}>Loading...</td>
+                  </tr>
+                ) : filteredReservations.length > 0 ? (
                   filteredReservations.map((res) => (
-                    <tr key={res.id}>
+                    <tr key={res.id || res._id}>
                       <td>{res.date}</td>
                       <td>{res.time}</td>
                       <td>{res.size}</td>
@@ -171,7 +204,7 @@ const DasboardFilled = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={7}>No reservations found</td>
+                    <td colSpan={6}>No reservations found</td>
                   </tr>
                 )}
               </tbody>
