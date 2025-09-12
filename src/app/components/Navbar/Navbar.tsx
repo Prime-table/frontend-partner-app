@@ -11,7 +11,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       // Replace this URL with your actual logout API endpoint
-      const response = await fetch("/api/auth/logout", {
+      const response = await fetch("http://localhost:5000/prime-table-partner/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

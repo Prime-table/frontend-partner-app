@@ -12,27 +12,30 @@ const RegisterPage = () => {
   const router = useRouter();
 
   const handleRegister = async () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
 
-    try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const res = await fetch("http://localhost:5000/prime-table-partner/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (res.ok) {
-        router.push("/welcome");
-      } else {
-        alert("Registration failed");
-      }
-    } catch (error) {
-      console.error(error);
+    if (res.ok) {
+      router.push("/welcome");
+    } else {
+      const errorData = await res.json();
+      alert(errorData.message || "Registration failed");
     }
-  };
+  } catch (error) {
+    console.error("Registration error:", error);
+    alert("Something went wrong");
+  }
+};
+
 
   return (
     <div className="auth-page">
