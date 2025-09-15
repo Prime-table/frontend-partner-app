@@ -28,7 +28,7 @@ const PromotionForm = () => {
     e.preventDefault();
     try {
       // API endpoint for saving promotions
-      const res = await fetch("http://localhost:3000/api/promotions", {
+      const res = await fetch("http://localhost:5000/prime-table-partner/promotions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(promotion),

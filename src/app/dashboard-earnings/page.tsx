@@ -12,29 +12,30 @@ const DashboardEarnings = () => {
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "http://localhost:5000/prime-table-partner";
+
   // Fallback static data
   const fallbackBookings = [
     {
-      id: 1,
       booking_id: "#SK-1015",
       date: "2025-07-24",
-      amount: "15,000.00",
+      amount: "15000",
       status: "Paid",
       withdrawal_earnings: "",
     },
     {
-      id: 2,
       booking_id: "#SK-1016",
       date: "2025-07-24",
-      amount: "15,000.00",
+      amount: "15000",
       status: "In escrow",
       withdrawal_earnings: "",
     },
     {
-      id: 3,
       booking_id: "#SK-1017",
       date: "2025-08-01",
-      amount: "15,000.00",
+      amount: "15000",
       status: "Pending",
       withdrawal_earnings: "",
     },
@@ -42,42 +43,54 @@ const DashboardEarnings = () => {
 
   const fallbackCards = [
     {
-      id: 1,
       title: "Total Earning",
       amount: "₦250,000",
-      icon: <FaSackDollar />,
       containerBg: "light-green",
       iconBg: "green",
       textColor: "white",
     },
     {
-      id: 2,
       title: "In Escrow",
       amount: "₦150,000",
-      icon: <PiUserRectangleThin />,
       containerBg: "light-orange",
       iconBg: "orange",
       textColor: "white",
     },
     {
-      id: 3,
       title: "Paid Out",
       amount: "₦300,000",
-      icon: <FaCheck />,
       containerBg: "light-gray",
       iconBg: "white-gray",
       textColor: "black",
     },
   ];
 
+  // Map card title → icon
+  const getCardIcon = (title: string) => {
+    switch (title.toLowerCase()) {
+      case "total earning":
+        return <FaSackDollar />;
+      case "in escrow":
+        return <PiUserRectangleThin />;
+      case "paid out":
+        return <FaCheck />;
+      default:
+        return <FaSackDollar />; // fallback icon
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:1990/mnb/api/dashboard");
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data = await res.json();
-        setBookings(data.bookings || fallbackBookings);
-        setCards(data.cards || fallbackCards);
+        // fetch bookings
+        const bookingsRes = await fetch(`${API_BASE_URL}/dashboard/bookings`);
+        const bookingsData = bookingsRes.ok ? await bookingsRes.json() : [];
+        setBookings(bookingsData.length ? bookingsData : fallbackBookings);
+
+        // fetch cards
+        const cardsRes = await fetch(`${API_BASE_URL}/dashboard/cards`);
+        const cardsData = cardsRes.ok ? await cardsRes.json() : [];
+        setCards(cardsData.length ? cardsData : fallbackCards);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
         setBookings(fallbackBookings);
@@ -87,30 +100,29 @@ const DashboardEarnings = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [API_BASE_URL]);
 
   // Convert yyyy-mm-dd → dd/mm/yyyy
-  function formatDate(isoDate: string) {
+  const formatDate = (isoDate: string) => {
     if (!isoDate) return "";
     const [year, month, day] = isoDate.split("-");
     return `${day}/${month}/${year}`;
-  }
+  };
 
   // Format into Naira
-  function formatNaira(value: string) {
+  const formatNaira = (value: string | number) => {
     if (!value) return "₦0";
     const num = Number(value.toString().replace(/,/g, ""));
     return num.toLocaleString("en-NG", {
       style: "currency",
       currency: "NGN",
     });
-  }
+  };
 
   const filteredBookings = bookings.filter((booking) => {
     const matchesStatus =
       filter.status === "all" ||
       booking.status.toLowerCase() === filter.status.toLowerCase();
-
     const matchesDate = !filter.date || booking.date === filter.date;
     return matchesStatus && matchesDate;
   });
@@ -162,10 +174,10 @@ const DashboardEarnings = () => {
         {/* Cards */}
         <div className="cards-setting">
           <div className="cards-container">
-            {cards.map((card) => (
-              <div key={card.id} className={`card ${card.containerBg}`}>
+            {cards.map((card, i) => (
+              <div key={i} className={`card ${card.containerBg}`}>
                 <div className={`icon ${card.iconBg} ${card.textColor}`}>
-                  {card.icon}
+                  {getCardIcon(card.title)}
                 </div>
                 <div className="card-content">
                   <p className="title">{card.title}</p>
@@ -194,8 +206,8 @@ const DashboardEarnings = () => {
                   <td colSpan={5}>Loading...</td>
                 </tr>
               ) : (
-                filteredBookings.map((b) => (
-                  <tr key={b.booking_id}>
+                filteredBookings.map((b, i) => (
+                  <tr key={i}>
                     <td>{b.booking_id}</td>
                     <td>{formatDate(b.date)}</td>
                     <td>

@@ -27,7 +27,7 @@ const PayoutSettings = () => {
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:1990/api/payout/update", {
+      const response = await fetch("http://localhost:5000/prime-table-partner/payout/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

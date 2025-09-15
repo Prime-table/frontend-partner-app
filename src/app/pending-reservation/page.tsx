@@ -1,11 +1,16 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import "../components/styles/Reservation.css";
 import Navbar from "../components/Navbar/Navbar";
 
+// ✅ Base URL from env (frontend-safe)
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/prime-table-partner";
+
 interface Reservation {
-  id: number;
+  _id: string;
   date: string;
   time: string;
   size: number;
@@ -14,81 +19,67 @@ interface Reservation {
   status: string;
 }
 
-const ReservationTable = () => {
-  const [openModal, setOpenModal] = useState<number | null>(null);
-  const [filter, setFilter] = useState("all");
+const ReservationTable: React.FC = () => {
+  const [openModal, setOpenModal] = useState<string | null>(null);
+  const [filter, setFilter] = useState("pending");
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // fallback sample data (used if fetch fails)
-  const sampleData: Reservation[] = [
-    {
-      id: 1,
-      date: "2025-08-22",
-      time: "7:00 PM",
-      size: 4,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-     {
-      id: 4,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Pending",
-    },
-  ];
+  // ✅ Fetch reservations
+  const fetchReservations = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/reservations`, {
+        cache: "no-store", // avoids stale cache
+      });
+      if (!res.ok) throw new Error("Failed to fetch reservations");
+      const data: Reservation[] = await res.json();
+      setReservations(data);
+      setError(null);
+    } catch (err: any) {
+      console.error("Error fetching reservations:", err);
+      setError("Unable to load reservations.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // fetch reservations
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const res = await fetch("/api/reservations"); // 👈 replace with backend endpoint
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data = await res.json();
-        setReservations(data);
-      } catch (error) {
-        console.error("Error fetching reservations:", error);
-        setReservations(sampleData); // fallback
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchReservations();
   }, []);
 
-  // filter reservations
+  // ✅ Update reservation status
+  const handleUpdate = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/reservations/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) throw new Error("Failed to update reservation");
+      await fetchReservations();
+    } catch (err) {
+      console.error("Error updating reservation:", err);
+      setError("Update failed.");
+    }
+  };
+
+  // ✅ Delete reservation
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/reservations/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete reservation");
+      await fetchReservations();
+    } catch (err) {
+      console.error("Error deleting reservation:", err);
+      setError("Delete failed.");
+    }
+  };
+
+  // ✅ Filter reservations
   const filteredReservations = reservations.filter((reservation) => {
     if (filter === "all") return true;
     return reservation.status.toLowerCase() === filter;
@@ -100,7 +91,7 @@ const ReservationTable = () => {
 
       {/* Filter Section */}
       <div className="reservation-status">
-        <h3>Reservation</h3>
+        <h3>Reservations</h3>
         <div className="filter-container">
           <label htmlFor="status">Filter:</label>
           <select
@@ -121,6 +112,8 @@ const ReservationTable = () => {
       <div className="reservations-container">
         {loading ? (
           <p>Loading reservations...</p>
+        ) : error ? (
+          <p className="error">{error}</p>
         ) : (
           <table className="reservation-table">
             <thead>
@@ -137,7 +130,7 @@ const ReservationTable = () => {
             <tbody>
               {filteredReservations.length > 0 ? (
                 filteredReservations.map((res) => (
-                  <tr key={res.id}>
+                  <tr key={res._id}>
                     <td>{res.date}</td>
                     <td>{res.time}</td>
                     <td>{res.size}</td>
@@ -153,13 +146,29 @@ const ReservationTable = () => {
                         <FiMoreVertical
                           className="action-icon"
                           onClick={() =>
-                            setOpenModal(openModal === res.id ? null : res.id)
+                            setOpenModal(openModal === res._id ? null : res._id)
                           }
                         />
-                        {openModal === res.id && (
+                        {openModal === res._id && (
                           <div className="action-modal">
-                            <button className="border-btn">Edit</button>
-                            <button className="border-btn">Cancel</button>
+                            <button
+                              className="border-btn"
+                              onClick={() => handleUpdate(res._id, "Approved")}
+                            >
+                              Approve
+                            </button>
+                            <button
+                              className="border-btn"
+                              onClick={() => handleUpdate(res._id, "Cancelled")}
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="border-btn"
+                              onClick={() => handleDelete(res._id)}
+                            >
+                              Delete
+                            </button>
                           </div>
                         )}
                       </div>

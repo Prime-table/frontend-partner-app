@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -22,27 +23,63 @@ type AnalyticsData = {
   bookings: number;
 };
 
+type AnalyticsSummary = {
+  totalBookings: number;
+  topTimeSlot: string;
+  totalViews: number;
+  conversionRate: number;
+};
+
 const Analytics = () => {
   const [chartData, setChartData] = useState<AnalyticsData[]>([]);
+  const [summary, setSummary] = useState<AnalyticsSummary>({
+    totalBookings: 0,
+    topTimeSlot: "N/A",
+    totalViews: 0,
+    conversionRate: 0,
+  });
   const [loading, setLoading] = useState(true);
+
+  const fallbackChartData: AnalyticsData[] = [
+    { date: "July", bookings: 50 },
+    { date: "Aug", bookings: 60 },
+    { date: "Sep", bookings: 25 },
+    { date: "Oct", bookings: 59 },
+    { date: "Nov", bookings: 18 },
+  ];
+
+  const fallbackSummary: AnalyticsSummary = {
+    totalBookings: 123,
+    topTimeSlot: "10:00 PM",
+    totalViews: 12500,
+    conversionRate: 543,
+  };
 
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/analytics");
-        if (!res.ok) throw new Error("Failed to fetch analytics");
-        const data = await res.json();
-        setChartData(data);
+        const [chartRes, summaryRes] = await Promise.all([
+          fetch("http://localhost:5000/prime-table-partner/analytics"),
+          fetch("http://localhost:5000/prime-table-partner/analytics-summary"),
+        ]);
+
+        // Chart data
+        if (!chartRes.ok) throw new Error("Failed to fetch chart data");
+        const chartJson: AnalyticsData[] = await chartRes.json();
+        setChartData(
+          Array.isArray(chartJson) && chartJson.length > 0
+            ? chartJson
+            : fallbackChartData
+        );
+
+        // Summary data
+        if (!summaryRes.ok) throw new Error("Failed to fetch summary data");
+        const summaryJson: AnalyticsSummary = await summaryRes.json();
+        setSummary(summaryJson || fallbackSummary);
       } catch (error) {
         console.error("Error fetching analytics:", error);
-        // fallback demo data
-        setChartData([
-          { date: "July", bookings: 50 },
-          { date: "Aug", bookings: 60 },
-          { date: "Sep", bookings: 25 },
-          { date: "Oct", bookings: 59 },
-          { date: "Nov", bookings: 18 },
-        ]);
+        setChartData(fallbackChartData);
+        setSummary(fallbackSummary);
       } finally {
         setLoading(false);
       }
@@ -65,7 +102,7 @@ const Analytics = () => {
               </div>
               <div>
                 <p>Total Bookings</p>
-                <h3>123</h3>
+                <h3>{summary.totalBookings}</h3>
               </div>
             </div>
 
@@ -76,7 +113,7 @@ const Analytics = () => {
               </div>
               <div>
                 <p>Top Time Slots</p>
-                <h3>10:00 PM</h3>
+                <h3>{summary.topTimeSlot}</h3>
               </div>
             </div>
 
@@ -87,7 +124,7 @@ const Analytics = () => {
               </div>
               <div>
                 <p>Total Views</p>
-                <h3>12,500</h3>
+                <h3>{summary.totalViews}</h3>
               </div>
             </div>
 
@@ -98,7 +135,7 @@ const Analytics = () => {
               </div>
               <div>
                 <p>Conversion Rate</p>
-                <h3>543</h3>
+                <h3>{summary.conversionRate}</h3>
               </div>
             </div>
           </div>
@@ -118,11 +155,7 @@ const Analytics = () => {
                 >
                   <CartesianGrid vertical={false} horizontal={true} />
                   <XAxis dataKey="date" tick={{ textAnchor: "middle" }} />
-                  <YAxis
-                    ticks={[0, 20, 40, 60, 80]}
-                    axisLine={false}
-                    tickLine={false}
-                  />
+                  <YAxis ticks={[0, 20, 40, 60, 80]} axisLine={false} tickLine={false} />
                   <Tooltip />
                   <Legend />
                   <Line

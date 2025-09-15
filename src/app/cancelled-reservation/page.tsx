@@ -5,7 +5,7 @@ import "../components/styles/Reservation.css";
 import Navbar from "../components/Navbar/Navbar";
 
 interface Reservation {
-  id: number;
+  _id: string;
   date: string;
   time: string;
   size: number;
@@ -14,81 +14,62 @@ interface Reservation {
   status: "Pending" | "Approved" | "Cancelled";
 }
 
-const ReservationTable = () => {
-  const [openModal, setOpenModal] = useState<number | null>(null);
-  const [filter, setFilter] = useState("all");
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/prime-table-partner";
+
+const fallbackData: Reservation[] = [
+  {
+    _id: "1",
+    date: "2025-08-22",
+    time: "7:00 PM",
+    size: 4,
+    name: "Mecury Paul",
+    table: "T4",
+    status: "Cancelled",
+  },
+  {
+    _id: "2",
+    date: "2025-08-23",
+    time: "8:00 PM",
+    size: 2,
+    name: "Mecury Paul",
+    table: "T4",
+    status: "Pending",
+  },
+];
+
+const ReservationTable: React.FC = () => {
+  const [openModal, setOpenModal] = useState<string | null>(null);
+  const [filter, setFilter] = useState("cancelled");
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // ✅ sample data (fallback if API fails)
-  const fallbackData: Reservation[] = [
-    {
-      id: 1,
-      date: "2025-08-22",
-      time: "7:00 PM",
-      size: 4,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Cancelled",
-    },
-    {
-      id: 2,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Cancelled",
-    },
-    {
-      id: 3,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Cancelled",
-    },
-    {
-      id: 4,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Cancelled",
-    },
-    {
-      id: 5,
-      date: "2025-08-23",
-      time: "8:00 PM",
-      size: 2,
-      name: "Mecury Paul",
-      table: "T4",
-      status: "Cancelled",
-    },
-  ];
+  // ✅ Fetch reservations with fallback
+  const fetchReservations = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/reservations`, {
+        cache: "no-store", // prevent stale data
+      });
+      if (!res.ok) throw new Error("Failed to fetch reservations");
+      const data: Reservation[] = await res.json();
+      setReservations(data);
+      setError(null);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setReservations(fallbackData);
+      setError("Unable to load live data. Showing fallback.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // ✅ Fetch reservations from API
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/reservations");
-        if (!res.ok) throw new Error("Failed to fetch reservations");
-        const data: Reservation[] = await res.json();
-        setReservations(data);
-      } catch (error) {
-        console.error("Fetch error:", error);
-        setReservations(fallbackData); // fallback sample data
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchReservations();
   }, []);
 
-  // ✅ filter reservations based on selected option
+  // ✅ filter reservations
   const filteredReservations = reservations.filter((reservation) => {
     if (filter === "all") return true;
     return reservation.status.toLowerCase() === filter;
@@ -122,57 +103,60 @@ const ReservationTable = () => {
         {loading ? (
           <p>Loading reservations...</p>
         ) : (
-          <table className="reservation-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Size</th>
-                <th>Name</th>
-                <th>Table</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredReservations.length > 0 ? (
-                filteredReservations.map((res) => (
-                  <tr key={res.id}>
-                    <td>{res.date}</td>
-                    <td>{res.time}</td>
-                    <td>{res.size}</td>
-                    <td>{res.name}</td>
-                    <td>{res.table}</td>
-                    <td>
-                      <span className={`status ${res.status.toLowerCase()}`}>
-                        {res.status}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="action-wrapper">
-                        <FiMoreVertical
-                          className="action-icon"
-                          onClick={() =>
-                            setOpenModal(openModal === res.id ? null : res.id)
-                          }
-                        />
-                        {openModal === res.id && (
-                          <div className="action-modal">
-                            <button className="border-btn">Edit</button>
-                            <button className="border-btn">Cancel</button>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
+          <>
+            {error && <p className="error">{error}</p>}
+            <table className="reservation-table">
+              <thead>
                 <tr>
-                  <td colSpan={7}>No reservations found</td>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Size</th>
+                  <th>Name</th>
+                  <th>Table</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredReservations.length > 0 ? (
+                  filteredReservations.map((res) => (
+                    <tr key={res._id}>
+                      <td>{res.date}</td>
+                      <td>{res.time}</td>
+                      <td>{res.size}</td>
+                      <td>{res.name}</td>
+                      <td>{res.table}</td>
+                      <td>
+                        <span className={`status ${res.status.toLowerCase()}`}>
+                          {res.status}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="action-wrapper">
+                          <FiMoreVertical
+                            className="action-icon"
+                            onClick={() =>
+                              setOpenModal(openModal === res._id ? null : res._id)
+                            }
+                          />
+                          {openModal === res._id && (
+                            <div className="action-modal">
+                              <button className="border-btn">Edit</button>
+                              <button className="border-btn">Cancel</button>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7}>No reservations found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
     </div>

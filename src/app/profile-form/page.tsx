@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import "../components/styles/Profile.css";
 import Navbar from "../components/Navbar/Navbar";
 
-const times = Array.from(
-  { length: 24 },
-  (_, i) => `${i.toString().padStart(2, "0")}:00`
+const times = Array.from({ length: 24 }, (_, i) =>
+  `${i.toString().padStart(2, "0")}:00`
 );
 
 const ProfilePage = () => {
@@ -17,6 +16,11 @@ const ProfilePage = () => {
   const [secondaryPreview, setSecondaryPreview] = useState<string | null>(null);
 
   const router = useRouter();
+
+  // API base URL
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "http://localhost:5000/prime-table-partner";
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -35,6 +39,7 @@ const ProfilePage = () => {
       setSecondaryPreview(URL.createObjectURL(file));
     }
   };
+
   type RestaurantFormFields = {
     restaurantName: { value: string };
     address: { value: string };
@@ -44,9 +49,11 @@ const ProfilePage = () => {
     pricePerTable: { value: string };
     description: { value: string };
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & RestaurantFormFields;
+
     const formData = new FormData();
     formData.append("restaurantName", target.restaurantName.value);
     formData.append("address", target.address.value);
@@ -55,17 +62,23 @@ const ProfilePage = () => {
     formData.append("premiumTable", target.premiumTable.value);
     formData.append("pricePerTable", target.pricePerTable.value);
     formData.append("description", target.description.value);
-    if (restaurantPhoto) formData.append("restaurantPhoto", restaurantPhoto);
+
+    if (restaurantPhoto) {
+      formData.append("restaurantPhoto", restaurantPhoto);
+    }
+    if (secondaryPhoto) {
+      formData.append("secondaryPhoto", secondaryPhoto);
+    }
 
     try {
-      const res = await fetch("/api/profile", {
+      const res = await fetch(`${API_BASE_URL}/restaurants/profile`, {
         method: "POST",
         body: formData,
       });
-      if (!res.ok) throw new Error("Failed to save profile");
-      alert("Profile saved successfully!");
 
-      // Navigate to /profile-save after successful submission
+      if (!res.ok) throw new Error("Failed to save profile");
+
+      alert("Profile saved successfully!");
       router.push("/profile-save");
     } catch (err) {
       console.error(err);
@@ -135,10 +148,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="drag-drop-preview">
                   <p>Drag & Drop</p>
-                  <span className="image-preview-label">
-                    Image <br />
-                    Preview
-                  </span>
+                  <span className="image-preview-label">Image Preview</span>
                   {photoPreview && (
                     <img
                       src={photoPreview}
@@ -151,7 +161,7 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Premium & Price aligned vertically with first upload container */}
+          {/* Premium & Price aligned */}
           <div className="row premium-price-row">
             <label>
               Premium Table? (Optional)
@@ -181,9 +191,7 @@ const ProfilePage = () => {
               </div>
               <div className="drag-drop-preview">
                 <p>Drag & Drop</p>
-                <span className="image-preview-label">
-                  Image <br /> Preview
-                </span>
+                <span className="image-preview-label">Image Preview</span>
                 {secondaryPreview && (
                   <img
                     src={secondaryPreview}
