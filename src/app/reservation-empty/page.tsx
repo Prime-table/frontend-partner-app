@@ -3,8 +3,16 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import "../components/styles/Reservation.css";
 
+type Reservation = {
+  _id: string;
+  serviceType: string;
+  date: string;
+  status: "pending" | "confirmed" | "cancelled";
+  notes?: string;
+};
+
 const ReservationEmpty = () => {
-  const [reservations, setReservations] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
@@ -12,9 +20,9 @@ const ReservationEmpty = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/reservations");
+        const res = await fetch("http://localhost:5000/prime-table-partner/reservations");
         if (!res.ok) throw new Error("Failed to fetch reservations");
-        const data = await res.json();
+        const data: Reservation[] = await res.json();
         setReservations(data);
       } catch (err) {
         console.error(err);
