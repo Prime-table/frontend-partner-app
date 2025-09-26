@@ -19,8 +19,7 @@ const ProfilePage = () => {
 
   // API base URL
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "https://backend-partner-app.onrender.com";
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,6 +62,15 @@ const ProfilePage = () => {
     formData.append("pricePerTable", target.pricePerTable.value);
     formData.append("description", target.description.value);
 
+    // ✅ Add partnerId required by backend schema
+    const partnerId = localStorage.getItem("partnerId");
+    if (partnerId) {
+      formData.append("partnerId", partnerId);
+    } else {
+      alert("No partnerId found. Please login again.");
+      return;
+    }
+
     if (restaurantPhoto) {
       formData.append("restaurantPhoto", restaurantPhoto);
     }
@@ -71,18 +79,21 @@ const ProfilePage = () => {
     }
 
     try {
-      const res = await fetch(`https://backend-partner-app.onrender.com/restaurants/profile`, {
+      const res = await fetch(`${API_BASE_URL}/restaurant/profile`, {
         method: "POST",
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Failed to save profile");
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to save profile: ${res.status} ${errorText}`);
+      }
 
       alert("Profile saved successfully!");
       router.push("/profile-save");
     } catch (err) {
-      console.error(err);
-      alert("Error saving profile.");
+      console.error("Profile save error:", err);
+      alert("Error saving profile. Check console for details.");
     }
   };
 
@@ -142,7 +153,7 @@ const ProfilePage = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handlePhotoChange(e)}
+                    onChange={handlePhotoChange}
                   />
                   <span>Choose File</span>
                 </div>
@@ -185,7 +196,7 @@ const ProfilePage = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleSecondaryPhotoChange(e)}
+                  onChange={handleSecondaryPhotoChange}
                 />
                 <span>Choose File</span>
               </div>

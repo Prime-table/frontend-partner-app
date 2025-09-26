@@ -5,7 +5,16 @@ import "../../component/styles/Reservation.css";
 import Navbar from "../../component/Navbar/Navbar";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/prime-table-partner";
+  process.env.NEXT_PUBLIC_API_URL || "https://backend-partner-app.onrender.com";
+
+// ✅ Helper to decode JWT token
+function parseJwt(token: string) {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+}
 
 type Reservation = {
   _id: string;
@@ -54,20 +63,31 @@ const ReservationTable: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // ✅ Fetch reservations with fallback
+  // ✅ Fetch reservations for the logged-in partner
   const fetchReservations = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/reservations`, {
-        cache: "no-store", // avoids stale cache in Next.js
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found. Please log in again.");
+
+      const payload = parseJwt(token);
+      const partnerId = payload?.id; // assuming token has `id` = partnerId
+      if (!partnerId) throw new Error("Invalid token. Partner ID not found.");
+
+      const res = await fetch(`${API_BASE_URL}/reservation/${partnerId}`, {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!res.ok) throw new Error("Failed to fetch reservations");
+
       const data: Reservation[] = await res.json();
       setReservations(data || []);
       setError(null);
     } catch (err) {
       console.error("Error fetching reservations:", err);
-      setReservations(fallbackReservations); // ✅ fallback
+      setReservations(fallbackReservations); // fallback data
       setError("Unable to load live reservations. Showing fallback data.");
     } finally {
       setLoading(false);
@@ -81,9 +101,12 @@ const ReservationTable: React.FC = () => {
   // ✅ Update reservation status
   const handleUpdate = async (id: string, newStatus: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/reservations/${id}`, {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+
+      const response = await fetch(`${API_BASE_URL}/reservation/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus }),
       });
       if (!response.ok) throw new Error("Failed to update reservation");
@@ -97,8 +120,12 @@ const ReservationTable: React.FC = () => {
   // ✅ Delete reservation
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/reservations/${id}`, {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+
+      const response = await fetch(`${API_BASE_URL}/reservation/${id}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to delete reservation");
       await fetchReservations();

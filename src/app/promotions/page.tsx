@@ -93,6 +93,7 @@ const PromotionForm = () => {
             style={{ display: "flex", gap: "0.4rem" }}
           >
             <div className="form-group">
+              <label htmlFor="">Start Date</label>
               <input
                 type="date"
                 id="startDate"
@@ -105,6 +106,7 @@ const PromotionForm = () => {
             </div>
 
             <div className="form-group">
+              <label htmlFor="">End Date</label>
               <input
                 type="date"
                 id="endDate"

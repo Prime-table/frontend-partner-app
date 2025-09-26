@@ -108,7 +108,7 @@ const RegisterPage: React.FC = () => {
 
         <p className="auth-switch">
           Already have an account?{" "}
-          <span onClick={() => router.push("/profile-form")}>Sign In</span>
+          <span onClick={() => router.push("/login")}>Sign In</span>
         </p>
       </div>
     </div>
