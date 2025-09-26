@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../component/Navbar/Navbar";
 import "../../component/styles/Profile.css";
+import Image from "next/image";
+
 
 const UserProfile = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
@@ -146,9 +148,11 @@ const UserProfile = () => {
 
                   <div className="image-container">
                     {profile.restaurantPhoto ? (
-                      <img
+                      <Image
                         src={profile.restaurantPhoto}
                         alt="Restaurant main"
+                        width={200}
+                        height={150}
                         className="preview-img"
                       />
                     ) : (
@@ -156,9 +160,11 @@ const UserProfile = () => {
                     )}
 
                     {profile.secondaryPhoto ? (
-                      <img
+                      <Image
                         src={profile.secondaryPhoto}
                         alt="Restaurant secondary"
+                        width={180}
+                        height={90}
                         className="preview-img"
                       />
                     ) : (
@@ -166,9 +172,11 @@ const UserProfile = () => {
                     )}
 
                     {profile.thirdPhoto ? (
-                      <img
+                      <Image 
                         src={profile.thirdPhoto}
                         alt="Restaurant third"
+                        width={180}
+                        height={90}
                         className="preview-img"
                       />
                     ) : (

@@ -118,7 +118,7 @@ const PromotionForm = () => {
           </div>
 
           {/* Button */}
-          <button type="submit" className="save-btn">
+          <button type="submit" className="save-btn" onClick={handleNavigate}>
             Save Promotion
           </button>
         </form>
