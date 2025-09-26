@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { FaCheck } from "react-icons/fa"; // white check icon
-import "../components/styles/ProfileSave.css";
-import Navbar from "../components/Navbar/Navbar";
+import "../../component/styles/ProfileSave.css";
+import Navbar from "../../component/Navbar/Navbar";
 
 const ProfileSavePage = () => {
   const router = useRouter();

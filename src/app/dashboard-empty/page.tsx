@@ -1,6 +1,6 @@
 import React from "react";
 import "../components/styles/Dasboard.css";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../../component/Navbar/Navbar";
 import { FaCalendarAlt } from "react-icons/fa";
 import { GrSchedules } from "react-icons/gr";
 import { IoEyeOutline } from "react-icons/io5";

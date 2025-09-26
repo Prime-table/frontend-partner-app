@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../components/styles/Promotion.css"; // external css file
-import Navbar from "../components/Navbar/Navbar";
+import "../../component/styles/Promotion.css"; // external css file
+import Navbar from "../../component/Navbar/Navbar";
 
 const PromotionForm = () => {
   const [promotion, setPromotion] = useState({

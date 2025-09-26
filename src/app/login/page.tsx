@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import "../components/styles/Auth.css";
+import "../../component/styles/Auth.css";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
@@ -11,33 +11,32 @@ const LoginPage = () => {
   const router = useRouter();
 
   const handleLogin = async () => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`, 
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Save userId and token to localStorage
+        localStorage.setItem("partnerId", data._id);
+        localStorage.setItem("token", data.token);
+
+        router.push("/dashboard"); // redirect after login
+      } else {
+        alert(data.message || "Login failed");
       }
-    );
-
-    const data = await res.json(); // get the response body
-
-    if (res.ok) {
-      // Save userId and token to localStorage
-      localStorage.setItem("partnerId", data._id); // partner/user ID
-      localStorage.setItem("token", data.token);   // optional: for auth headers
-
-      router.push("/dashboard"); // redirect after login
-    } else {
-      alert(data.message || "Login failed");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong during login");
     }
-  } catch (error) {
-    console.error("Login error:", error);
-    alert("Something went wrong during login");
-  }
-};
-
+  };
 
   return (
     <div className="auth-page">

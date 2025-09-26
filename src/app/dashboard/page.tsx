@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import "../components/styles/Dasboard.css";
-import "../components/styles/Reservation.css";
-import Navbar from "../components/Navbar/Navbar";
+import "../../component/styles/Dasboard.css";
+import "../../component/styles/Reservation.css";
+import Navbar from "../../component/Navbar/Navbar";
 import { FaCalendarAlt } from "react-icons/fa";
 import { GrSchedules } from "react-icons/gr";
 import { IoAlert, IoEyeOutline } from "react-icons/io5";
 
 // ✅ Base URL from env (frontend safe)
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/prime-table-partner";
+  process.env.NEXT_PUBLIC_API_URL || "https://backend-partner-app.onrender.com/";
 
 interface Reservation {
   _id?: string;
@@ -62,11 +62,20 @@ const DashboardFilled: React.FC = () => {
     viewsThisWeek: 543,
   };
 
-  // ✅ fetch reservations
+  // ✅ fetch reservations by partnerId
   const fetchReservations = async () => {
     setLoadingReservations(true);
+    const partnerId = localStorage.getItem("partnerId");
+
+    if (!partnerId) {
+      setReservations(fallbackReservations);
+      setErrorReservations("Partner ID not found. Showing fallback reservations.");
+      setLoadingReservations(false);
+      return;
+    }
+
     try {
-      const res = await fetch(`${API_BASE_URL}/reservations`, { cache: "no-store" });
+      const res = await fetch(`${API_BASE_URL}/reservation/${partnerId}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch reservations");
       const data: Reservation[] = await res.json();
       setReservations(data.length ? data : fallbackReservations);
@@ -80,10 +89,11 @@ const DashboardFilled: React.FC = () => {
     }
   };
 
-  // ✅ fetch dashboard summary
+  // ✅ fetch dashboard summary by partnerId
   const fetchDashboardSummary = async () => {
     setLoadingSummary(true);
     const partnerId = localStorage.getItem("partnerId");
+
     if (!partnerId) {
       setDashboardSummary(fallbackSummary);
       setErrorSummary("Partner ID not found. Showing default summary.");
@@ -92,10 +102,19 @@ const DashboardFilled: React.FC = () => {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/dashboard-summary?partnerId=${partnerId}`);
+      const res = await fetch(`${API_BASE_URL}/dashboard/${partnerId}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch dashboard summary");
-      const data: DashboardSummary = await res.json();
-      setDashboardSummary(data);
+      const data: Partial<DashboardSummary> = await res.json();
+
+      // ✅ sanitize API response to avoid undefined
+      setDashboardSummary({
+        totalBookings: data.totalBookings ?? 0,
+        incomingReservations: data.incomingReservations ?? 0,
+        payoutAmount: data.payoutAmount ?? 0,
+        payoutStatus: data.payoutStatus ?? "pending",
+        viewsThisWeek: data.viewsThisWeek ?? 0,
+      });
+
       setErrorSummary(null);
     } catch (err) {
       console.error("Dashboard summary fetch error:", err);
@@ -163,7 +182,9 @@ const DashboardFilled: React.FC = () => {
           <div>
             <p>Payout Status</p>
             <div className="status-filled">
-              <p>N{dashboardSummary.payoutAmount.toLocaleString()}</p>
+              <p>
+                N{(dashboardSummary.payoutAmount ?? 0).toLocaleString()}
+              </p>
               <p>{dashboardSummary.payoutStatus}</p>
             </div>
           </div>

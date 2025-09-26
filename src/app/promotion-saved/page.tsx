@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation"; 
 import { FaCheck } from "react-icons/fa";
 import "../components/styles/Promotion.css"; // external CSS 
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../../component/Navbar/Navbar";
 
 const PromotionSaved = () => {
   const router = useRouter();

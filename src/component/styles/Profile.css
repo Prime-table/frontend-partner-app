@@ -345,15 +345,15 @@
 }
 
 .first-image {
-  background-image: url('../../../../public/images/Bacon Burgers@2x.png');
+  background-image: url('../../../public/images/Bacon Burgers@2x.png');
 }
 
 .second-image {
-  background-image: url('../../../../public/images/Bacon Burgers@2x (1).png');
+  background-image: url('../../../public/images/Bacon Burgers@2x (1).png');
 }
 
 .third-image {
-  background-image: url('../../../../public/images/Frame 177.png');
+  background-image: url('../../../public/images/Frame 177.png');
 }
 
 

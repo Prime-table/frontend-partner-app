@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import "../../components/styles/Settings.css";
-import Navbar from "@/app/components/Navbar/Navbar";
+import Navbar from "@/component/Navbar/Navbar";
 
 const CommunicationReference = () => {
   const [emailSettings, setEmailSettings] = useState({

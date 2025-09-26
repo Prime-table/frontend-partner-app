@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
-import "../components/styles/Reservation.css";
-import Navbar from "../components/Navbar/Navbar";
+import "../../component/styles/Reservation.css";
+import Navbar from "../../component/Navbar/Navbar";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/prime-table-partner";

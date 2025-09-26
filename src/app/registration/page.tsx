@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import "../components/styles/Auth.css";
+import "../../component/styles/Auth.css";
 import { useRouter } from "next/navigation";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/prime-table-partner";
+  process.env.NEXT_PUBLIC_API_URL || "https://backend-partner-app.onrender.com";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -38,7 +38,17 @@ const RegisterPage: React.FC = () => {
       });
 
       if (res.ok) {
-        router.push("/welcome");
+        const data = await res.json();
+
+        // 🔹 Save token & user/partnerId if available
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+        if (data.partnerId || data.userId || data._id) {
+          localStorage.setItem("partnerId", data.partnerId || data.userId || data._id);
+        }
+
+        router.push("/profile-form");
       } else {
         const errorData = await res.json();
         setError(errorData.message || "Registration failed.");

@@ -1,64 +1,58 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar/Navbar";
-import "../components/styles/Profile.css";
+import Navbar from "../../component/Navbar/Navbar";
+import "../../component/styles/Profile.css";
 
-const UserProfile: React.FC = () => {
+const UserProfile = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Fallback single-profile (used when fetch fails)
-  const fallbackProfiles = [
-    {
-      _id: "fallback-1",
-      restaurantName: "Big Taste",
-      totalReservation: 500,
-      pendingReservation: 12,
-      approvedReservation: 550,
-      pendingRevenue: 42300,
-      address: "1234 Culinary Ave., Foodsville, CA 987854",
-      openAt: "11:00 AM",
-      closeAt: "09:00 PM",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Ac aliquam ultrices massa aenean risus etiam ac tristique habitasse.",
-      paymentMethod: "Bank Transfer",
-      premiumTable: true,
-      pricePerTable: "$400",
-      restaurantPhoto: null,
-      secondaryPhoto: null,
-    },
-  ];
-
-  const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "http://localhost:5000/prime-table-partner";
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchProfile = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/restaurants/profile`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setLoading(true);
+
+        // ✅ get token from localStorage
+        const token = localStorage.getItem("token");
+        
+        if (!token) {
+          throw new Error("No token found. Please log in again.");
+        }
+
+        const res = await fetch(
+          "https://backend-partner-app.onrender.com/restaurants/profile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`, // ✅ token is now sent
+            },
+          }
+        );
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(
+            `Failed to fetch: ${res.status} ${res.statusText} — ${text}`
+          );
+        }
+
         const data = await res.json();
 
-        // If backend returns a single object, normalize to array
-        if (!Array.isArray(data)) {
-          setProfiles([data]);
-        } else {
-          setProfiles(data.length ? data : fallbackProfiles);
-        }
+        // Ensure we always work with an array
+        setProfiles(Array.isArray(data) ? data : [data]);
       } catch (err: any) {
-        console.warn("Fetch profiles failed — using fallback. Error:", err);
-        setError("Unable to fetch profiles. Showing fallback data.");
-        setProfiles(fallbackProfiles);
+        console.error(err);
+        setError(err.message || "Something went wrong while fetching profile.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfiles();
-  }, [API_BASE_URL]);
+    fetchProfile();
+  }, []);
 
   return (
     <div>
@@ -151,7 +145,6 @@ const UserProfile: React.FC = () => {
                   </div>
 
                   <div className="image-container">
-                    {/* First Image / main */}
                     {profile.restaurantPhoto ? (
                       <img
                         src={profile.restaurantPhoto}
@@ -162,7 +155,6 @@ const UserProfile: React.FC = () => {
                       <div className="first-image placeholder" />
                     )}
 
-                    {/* Secondary */}
                     {profile.secondaryPhoto ? (
                       <img
                         src={profile.secondaryPhoto}
@@ -173,7 +165,6 @@ const UserProfile: React.FC = () => {
                       <div className="second-image placeholder" />
                     )}
 
-                    {/* Third image - optional fallback */}
                     {profile.thirdPhoto ? (
                       <img
                         src={profile.thirdPhoto}

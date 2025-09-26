@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import "../components/styles/Reservation.css";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../../component/Navbar/Navbar";
 
 // ✅ Base URL from env (frontend-safe)
 const API_BASE_URL =

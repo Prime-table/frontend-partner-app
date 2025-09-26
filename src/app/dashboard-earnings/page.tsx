@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../../component/Navbar/Navbar";
 import "../components/styles/Dasboard.css";
 import { FaSackDollar } from "react-icons/fa6";
 import { PiUserRectangleThin } from "react-icons/pi";

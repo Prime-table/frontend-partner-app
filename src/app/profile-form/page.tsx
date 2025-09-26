@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../components/styles/Profile.css";
-import Navbar from "../components/Navbar/Navbar";
+import "../../component/styles/Profile.css";
+import Navbar from "../../component/Navbar/Navbar";
 
 const times = Array.from({ length: 24 }, (_, i) =>
   `${i.toString().padStart(2, "0")}:00`
@@ -20,7 +20,7 @@ const ProfilePage = () => {
   // API base URL
   const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "http://localhost:5000/prime-table-partner";
+    "https://backend-partner-app.onrender.com";
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,7 +71,7 @@ const ProfilePage = () => {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/restaurants/profile`, {
+      const res = await fetch(`https://backend-partner-app.onrender.com/restaurants/profile`, {
         method: "POST",
         body: formData,
       });
