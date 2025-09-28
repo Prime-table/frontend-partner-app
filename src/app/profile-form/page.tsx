@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
   // API base URL
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+    process.env.NEXT_PUBLIC_API_BASE_URL || "https://backend-partner-app.onrender.com";
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
