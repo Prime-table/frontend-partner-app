@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "../../../component/styles/Settings.css";
-import Navbar from "@/component/Navbar/Navbar";
+import Navbar from "../../../component/Navbar/Navbar";
 
 const SecuritySettings = () => {
   const router = useRouter();
