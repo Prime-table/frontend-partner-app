@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Navbar from "../../component/Navbar/Navbar";
-import "../components/styles/Dasboard.css";
+import "../../component/styles/Dasboard.css";
 import { FaSackDollar } from "react-icons/fa6";
 import { PiUserRectangleThin } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";

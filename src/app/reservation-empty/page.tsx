@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../component/Navbar/Navbar";
-import "../components/styles/Reservation.css";
+import "../../component/styles/Reservation.css";
 
 type Reservation = {
   _id: string;

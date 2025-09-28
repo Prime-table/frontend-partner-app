@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import "../../components/styles/Settings.css";
+import "../../../component/styles/Settings.css";
 import Navbar from "@/component/Navbar/Navbar";
 
 const CommunicationReference = () => {
